@@ -1,6 +1,5 @@
 name:                servant-to-elm-example
 version:             0.1.0.0
--- synopsis:
 -- description:
 homepage:            https://github.com/githubuser/servant-to-elm-example#readme
 license:             BSD3
@@ -10,11 +9,21 @@ maintainer:          example@example.com
 copyright:           2021 Author name here
 category:            Web
 build-type:          Simple
-cabal-version:       >=1.10
-extra-source-files:  README.md
+cabal-version:       >=1.12
 
 executable servant-to-elm-example
   hs-source-dirs:      src
   main-is:             Main.hs
   default-language:    Haskell2010
-  build-depends:       base >= 4.7 && < 5
+  build-depends:       
+      base >= 4.7 && < 5
+    , bytestring
+    , text
+    , servant-server
+    , servant
+    , aeson
+    , wai
+    , wai, extra
+    , warp
+    , http-types
+
