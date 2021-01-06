@@ -21,9 +21,18 @@ executable servant-to-elm-example
     , text
     , servant-server
     , servant
+    , servant-to-elm 
     , aeson
     , wai
     , wai, extra
     , warp
     , http-types
+    , elm-syntax
+    , haskell-to-elm
+    , servant-multipart
+    , generics-sop
+    , unordered-containers
+    , prettyprinter
+    , filepath
+    , directory
 

@@ -3,7 +3,35 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    hackage: servant-to-elm-0.4.1.0@sha256:89a28455449a7b4ee57f85ee5422ad87cd0e2a72fb9b7b9bd0a554639f29566b,3042
+    pantry-tree:
+      size: 433
+      sha256: 8c7e8e9d6917c17bb8c94824c6310b682f1126f651ddbcaabd25e852b369f37c
+  original:
+    hackage: servant-to-elm-0.4.1.0@sha256:89a28455449a7b4ee57f85ee5422ad87cd0e2a72fb9b7b9bd0a554639f29566b,3042
+- completed:
+    hackage: elm-syntax-0.3.0.0@sha256:8fd57f8e15e499c11b78983bce3c4b237eb2f22e467a55d51702b43a18c61323,2257
+    pantry-tree:
+      size: 788
+      sha256: 47dc847d2d26cf6fd3abfff8e8e254f56bfcb0c606c350709bf3d4acfd05cff4
+  original:
+    hackage: elm-syntax-0.3.0.0@sha256:8fd57f8e15e499c11b78983bce3c4b237eb2f22e467a55d51702b43a18c61323,2257
+- completed:
+    hackage: haskell-to-elm-0.3.0.0@sha256:b8a016087523596c7420fc0b78611b2ffa9b8094c8c5930b89ef7bbec82401a5,3614
+    pantry-tree:
+      size: 505
+      sha256: 50eacf6c6c0386453d8504bcfff3803f9df8867b8802e12013c9146fd29624b3
+  original:
+    hackage: haskell-to-elm-0.3.0.0@sha256:b8a016087523596c7420fc0b78611b2ffa9b8094c8c5930b89ef7bbec82401a5,3614
+- completed:
+    hackage: servant-multipart-0.12@sha256:aa81dd0478270ade4a21b75611d5bc9cce8107df2e89c37b9964a3421629825d,2761
+    pantry-tree:
+      size: 386
+      sha256: 51c4e9e8be3ee80689bb6df46aee484a4f434dbeb33f4379ed8d1741fe4631cd
+  original:
+    hackage: servant-multipart-0.12@sha256:aa81dd0478270ade4a21b75611d5bc9cce8107df2e89c37b9964a3421629825d,2761
 snapshots:
 - completed:
     size: 533252

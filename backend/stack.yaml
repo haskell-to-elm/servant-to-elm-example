@@ -40,8 +40,11 @@ packages:
 # - git: https://github.com/commercialhaskell/stack.git
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
-# extra-deps: []
-
+extra-deps:
+  - servant-to-elm-0.4.1.0@sha256:89a28455449a7b4ee57f85ee5422ad87cd0e2a72fb9b7b9bd0a554639f29566b,3042 
+  - elm-syntax-0.3.0.0@sha256:8fd57f8e15e499c11b78983bce3c4b237eb2f22e467a55d51702b43a18c61323,2257
+  - haskell-to-elm-0.3.0.0@sha256:b8a016087523596c7420fc0b78611b2ffa9b8094c8c5930b89ef7bbec82401a5,3614
+  - servant-multipart-0.12@sha256:aa81dd0478270ade4a21b75611d5bc9cce8107df2e89c37b9964a3421629825d,2761
 # Override default flag values for local packages and extra-deps
 # flags: {}
 
