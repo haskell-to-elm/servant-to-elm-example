@@ -1,4 +1,5 @@
 # servant-to-elm-example
 
-- run backend `stack run`
+- generate elm from haskell `cd backend && stack run`
+- run backend (TODO)
 - run frontend `cd frontend && elm-live src/Main.elm`

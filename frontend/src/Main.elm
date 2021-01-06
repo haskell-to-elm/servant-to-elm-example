@@ -1,41 +1,58 @@
 module Main exposing (main)
 
+import Api
+import ApiBook
 import Browser exposing (element)
-import Html exposing (Html, a, button, div, h1, input, p, span, text)
-import Html.Attributes exposing (class, href, placeholder, rel, target, type_, value)
-import Html.Events exposing (onClick, onInput)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
+import Http
+import Json.Decode exposing (Decoder, field, string)
 
 
 main : Program () Model Msg
 main =
     element
-        { init = always init
+        { init = init
         , view = view
         , update = update
         , subscriptions = always Sub.none
         }
 
 
-type alias Model =
-    ()
+type alias ApiResult a =
+    Result ( Http.Error, Maybe { metadata : Http.Metadata, body : String } ) a
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( (), Cmd.none )
+type Model
+    = Failure String
+    | Loading
+    | Success ApiBook.Book
+
+
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( Loading, Api.getBook |> Cmd.map GotBookResponse )
 
 
 
 -- update
 
 
-type alias Msg =
-    ()
+type Msg
+    = GotBookResponse (ApiResult ApiBook.Book)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        GotBookResponse result ->
+            case result of
+                Ok book ->
+                    ( Success book, Cmd.none )
+
+                Err e ->
+                    ( Failure <| Debug.toString e, Cmd.none )
 
 
 
@@ -44,4 +61,4 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div [] [ text "hello from elm" ]
+    div [] [ text <| Debug.toString model ]

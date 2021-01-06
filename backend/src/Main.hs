@@ -39,6 +39,27 @@ data Book = Book
   }
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
 
+type BookAPI = "book" :> Get '[JSON] (Headers '[Header "Access-Control-Allow-Origin" String, Header "Access-Control-Allow-Headers" String] Book)
+
+bookApi :: Proxy BookAPI
+bookApi = Proxy
+
+bookExample :: Book
+bookExample = Book "Haskell in Depth" "Vitaly Bragilevsky"
+
+server :: Server BookAPI
+server = pure $ (addHeader "*" . addHeader "Content-Type") bookExample
+
+app :: Application
+app = serve bookApi server
+
+main :: IO ()
+main = run 8080 app
+
+-- Code generation
+
+-- Problems: Elm module path/name
+
 instance HasElmType Book where
   elmDefinition =
     Just $ deriveElmTypeDefinition @Book Language.Haskell.To.Elm.defaultOptions "Api.Book.Book"
@@ -51,33 +72,28 @@ instance HasElmEncoder Aeson.Value Book where
   elmEncoderDefinition =
     Just $ deriveElmJSONEncoder @Book Language.Haskell.To.Elm.defaultOptions Aeson.defaultOptions "Api.Book.encoder"
 
-type BookAPI = "book" :> Get '[JSON] Book
-
-bookApi :: Proxy BookAPI
-bookApi = Proxy
-
-server :: Server BookAPI
-server = pure $ Book "Haskell in Depth" "Vitaly Bragilevsky"
-
-app :: Application
-app = serve bookApi server
-
 writeContentsToFile :: forall ann. Module -> Doc ann -> IO ()
 writeContentsToFile _moduleName contents = do
-  let path = T.unpack $ "../frontend/Api/" <> T.intercalate "." _moduleName <> ".elm"
+  let path = T.unpack $ "../frontend/src/" <> T.intercalate "." _moduleName <> ".elm"
   createDirectoryIfMissing True $ takeDirectory path
   print $ "writing " <> path <> " ..."
   withFile path WriteMode (`hPutDoc` contents)
 
-main :: IO ()
--- main = run 8080 app
-main = do
-  let definitions =
-        map (elmEndpointDefinition "Config.urlBase" ["Api"]) (elmEndpoints @BookAPI)
-          <> jsonDefinitions @Book
+-- No instance for (HasElmDecoder
+--                      Value
+--                      (Headers
+--                         '[Header "Access-Control-Allow-Origin" String,
+--                           Header "Access-Control-Allow-Headers" String]
+--                         Book))
 
-      modules =
-        Pretty.modules $
-          Simplification.simplifyDefinition <$> definitions
+-- generateElm :: IO ()
+-- generateElm = do
+--   let definitions =
+--         map (elmEndpointDefinition "Config.urlBase" ["Api"]) (elmEndpoints @BookAPI)
+--           <> jsonDefinitions @Book
 
-  forM_ (HashMap.toList modules) $ uncurry writeContentsToFile
+--       modules =
+--         Pretty.modules $
+--           Simplification.simplifyDefinition <$> definitions
+
+--   forM_ (HashMap.toList modules) $ uncurry writeContentsToFile
