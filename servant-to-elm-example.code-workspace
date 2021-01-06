@@ -6,10 +6,10 @@
     {
       "path": "frontend"
     },
-    {
-      "path": ".",
-      "name": "root"
-    }
+    // {
+    //   "path": ".",
+    //   "name": "root"
+    // }
   ],
   "settings": {
     "[elm]": {
