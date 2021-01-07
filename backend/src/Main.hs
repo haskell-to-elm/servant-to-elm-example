@@ -9,7 +9,6 @@
 
 module Main where
 
-import Data.Aeson
 import qualified Data.Aeson as Aeson
 import Data.Foldable
 import qualified Data.HashMap.Lazy as HashMap
@@ -26,6 +25,9 @@ import qualified Language.Elm.Simplification as Simplification
 import Language.Haskell.To.Elm
 import Network.Wai
 import Network.Wai.Handler.Warp
+import Network.Wai.Middleware.Cors
+import Network.Wai.Middleware.RequestLogger (logStdoutDev)
+import Network.Wai.Middleware.Servant.Options
 import Servant
 import Servant.API
 import Servant.To.Elm
@@ -33,67 +35,81 @@ import System.Directory (createDirectoryIfMissing)
 import System.FilePath.Posix (takeDirectory)
 import System.IO (IOMode (..), withFile)
 
+main :: IO ()
+main = do
+  codegenMain
+  serverMain
+
+-- Types (Domain Model)
 data Book = Book
-  { title :: Text,
+  { bookId :: Int,
+    title :: Text,
     authorName :: Text
   }
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
 
-type BookAPI = "book" :> Get '[JSON] (Headers '[Header "Access-Control-Allow-Origin" String, Header "Access-Control-Allow-Headers" String] Book)
+data Author = Author
+  { authorId :: Int,
+    name :: Text
+  }
+  deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
+
+-- Server
+type BookAPI = "book" :> Get '[JSON] Book
 
 bookApi :: Proxy BookAPI
 bookApi = Proxy
 
 bookExample :: Book
-bookExample = Book "Haskell in Depth" "Vitaly Bragilevsky"
+bookExample = Book 1 "Haskell in Depth" "Vitaly Bragilevsky"
 
 server :: Server BookAPI
-server = pure $ (addHeader "*" . addHeader "Content-Type") bookExample
+server = pure bookExample
 
 app :: Application
-app = serve bookApi server
+app =
+  logStdoutDev
+    . cors (const $ Just policy)
+    . provideOptions bookApi
+    $ serve bookApi server
+  where
+    policy = simpleCorsResourcePolicy {corsRequestHeaders = ["content-type"]}
 
-main :: IO ()
-main = run 8080 app
+serverMain :: IO ()
+serverMain = do
+  let port = 8080
+  putStrLn $ "starting server at " <> show port
+  run port app
 
 -- Code generation
 
--- Problems: Elm module path/name
-
 instance HasElmType Book where
   elmDefinition =
-    Just $ deriveElmTypeDefinition @Book Language.Haskell.To.Elm.defaultOptions "Api.Book.Book"
+    Just $ deriveElmTypeDefinition @Book defaultOptions "Api.Book.Book"
 
 instance HasElmDecoder Aeson.Value Book where
   elmDecoderDefinition =
-    Just $ deriveElmJSONDecoder @Book Language.Haskell.To.Elm.defaultOptions Aeson.defaultOptions "Api.Book.decoder"
+    Just $ deriveElmJSONDecoder @Book defaultOptions Aeson.defaultOptions "Api.Book.decoder"
 
 instance HasElmEncoder Aeson.Value Book where
   elmEncoderDefinition =
-    Just $ deriveElmJSONEncoder @Book Language.Haskell.To.Elm.defaultOptions Aeson.defaultOptions "Api.Book.encoder"
+    Just $ deriveElmJSONEncoder @Book defaultOptions Aeson.defaultOptions "Api.Book.encoder"
 
 writeContentsToFile :: forall ann. Module -> Doc ann -> IO ()
-writeContentsToFile _moduleName contents = do
-  let path = T.unpack $ "../frontend/src/" <> T.intercalate "." _moduleName <> ".elm"
+writeContentsToFile moduleName contents = do
+  let path = T.unpack $ "../frontend/src/" <> T.intercalate "/" moduleName <> ".elm"
   createDirectoryIfMissing True $ takeDirectory path
   print $ "writing " <> path <> " ..."
   withFile path WriteMode (`hPutDoc` contents)
 
--- No instance for (HasElmDecoder
---                      Value
---                      (Headers
---                         '[Header "Access-Control-Allow-Origin" String,
---                           Header "Access-Control-Allow-Headers" String]
---                         Book))
+codegenMain :: IO ()
+codegenMain = do
+  let definitions =
+        map (elmEndpointDefinition "Config.urlBase" ["Api", "Api"]) (elmEndpoints @BookAPI)
+          <> jsonDefinitions @Book
 
--- generateElm :: IO ()
--- generateElm = do
---   let definitions =
---         map (elmEndpointDefinition "Config.urlBase" ["Api"]) (elmEndpoints @BookAPI)
---           <> jsonDefinitions @Book
+      modules =
+        Pretty.modules $
+          Simplification.simplifyDefinition <$> definitions
 
---       modules =
---         Pretty.modules $
---           Simplification.simplifyDefinition <$> definitions
-
---   forM_ (HashMap.toList modules) $ uncurry writeContentsToFile
+  forM_ (HashMap.toList modules) $ uncurry writeContentsToFile

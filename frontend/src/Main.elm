@@ -1,7 +1,7 @@
 module Main exposing (main)
 
-import Api
-import ApiBook
+import Api.Api as Api
+import Api.Book exposing (Book)
 import Browser exposing (element)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -27,7 +27,7 @@ type alias ApiResult a =
 type Model
     = Failure String
     | Loading
-    | Success ApiBook.Book
+    | Success Book
 
 
 init : () -> ( Model, Cmd Msg )
@@ -40,7 +40,7 @@ init _ =
 
 
 type Msg
-    = GotBookResponse (ApiResult ApiBook.Book)
+    = GotBookResponse (ApiResult Book)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

@@ -35,4 +35,7 @@ executable servant-to-elm-example
     , prettyprinter
     , filepath
     , directory
+    , wai-cors
+    , wai-extra
+    , servant-options
 

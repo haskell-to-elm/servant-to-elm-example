@@ -45,6 +45,7 @@ extra-deps:
   - elm-syntax-0.3.0.0@sha256:8fd57f8e15e499c11b78983bce3c4b237eb2f22e467a55d51702b43a18c61323,2257
   - haskell-to-elm-0.3.0.0@sha256:b8a016087523596c7420fc0b78611b2ffa9b8094c8c5930b89ef7bbec82401a5,3614
   - servant-multipart-0.12@sha256:aa81dd0478270ade4a21b75611d5bc9cce8107df2e89c37b9964a3421629825d,2761
+  - servant-options-0.1.0.0@sha256:39f50166a68006250e79370372f553ca476f14d06d93fa0c401050253aeba803,914
 # Override default flag values for local packages and extra-deps
 # flags: {}
 
