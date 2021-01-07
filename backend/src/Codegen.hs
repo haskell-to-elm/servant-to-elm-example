@@ -36,11 +36,13 @@ runCodegen = do
   let definitions =
         map (elmEndpointDefinition "Config.urlBase" ["Api", "Api"]) (elmEndpoints @LibraryAPI)
           -- Each new type from domain model should be added there
-          -- (otherwise the root Elm module will fail to import some missing module):
+          -- (otherwise the root Elm module will fail to import some missing module,
+          -- or will refer to the type which definition was not written to file):
           <> jsonDefinitions @Book
           <> jsonDefinitions @Author
           <> jsonDefinitions @Examples
-          <> jsonDefinitions @Example1
+          -- <> jsonDefinitions @Adt1 -- Error in elm decoder
+          <> jsonDefinitions @Adt2
       -- Combine definitions into modules
       modules = Pretty.modules $ Simplification.simplifyDefinition <$> definitions
   -- For each module write contents to file

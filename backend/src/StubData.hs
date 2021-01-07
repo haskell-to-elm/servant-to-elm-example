@@ -36,28 +36,38 @@ stubAuthors =
 stubExamples :: Examples
 stubExamples =
   Examples
-    { {- example1 =
-        [ Example1A 42 "Hi",
-          -- Example1B True ()
-        ], -}
-      -- example2 = [Nothing, Just Nothing, Just (Just ())],
+    { -- adt1 = [Adt1A 42 "Hi", Adt1B True],
+      adt2 = [Adt2A 42 "Hi", Adt2B True],
       example3 = [Nothing, Just Nothing, Just (Just 42)],
       example4 = Nothing,
       example5 = Just Nothing,
       example6 = Just (Just 42)
+      -- unit = ()
     }
 
 {-
+
 Encoded by Aeson as:
+
   {
-    "example1": [
-      { "tag": "Example1A", "field1": 42, "field2": "Hi" },
-      { "tag": "Example1B", "field3": true, "field4": [] }
+    "adt2": [
+      { "tag": "Adt2A", "contents": [42, "Hi"] },
+      { "tag": "Adt2B", "contents": true }
     ],
-    "example2": [null, null, []],
-    "example3": [null, null, 42],
     "example4": null,
     "example5": null,
+    "example3": [null, null, 42],
     "example6": 42
   }
+
+Decoded in Elm as:
+
+  Success {
+    adt2 = [Adt2A 42 "Hi",Adt2B True],
+    example3 = [Nothing,Nothing,Just (Just 42)],
+    example4 = Nothing,
+    example5 = Nothing,
+    example6 = Just (Just 42)
+  }
+
 -}

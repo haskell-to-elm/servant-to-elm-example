@@ -21,7 +21,7 @@ What's cool here is that [servant-to-elm] does the job of generating types and d
 
 ### Adding new types
 
-1. Define the type, derive necessary instances. Specify Elm module name for that type (which better keep the same)
+1. Define the type, derive necessary instances. Specify Elm module name for that type (which better keep the same; but you can also store several types in one module, see `Examples` type and corresponding generated module)
 1. Add the type to `Codegen.hs` - `<> jsonDefinitions @YourNewType`
 1. Use your type in `Server.hs` or wherever it's intended to
 1. Run code-generation again
