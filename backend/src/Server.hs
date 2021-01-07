@@ -18,12 +18,16 @@ import StubData
 type LibraryAPI =
   "books" :> Get '[JSON] [Book]
     :<|> "authors" :> Get '[JSON] [Author]
+    :<|> "examples" :> Get '[JSON] Examples
 
 libraryApi :: Proxy LibraryAPI
 libraryApi = Proxy
 
 server :: Server LibraryAPI
-server = pure stubBooks :<|> pure stubAuthors
+server =
+  pure stubBooks
+    :<|> pure stubAuthors
+    :<|> pure stubExamples
 
 app :: Application
 app =

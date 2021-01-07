@@ -39,6 +39,8 @@ runCodegen = do
           -- (otherwise the root Elm module will fail to import some missing module):
           <> jsonDefinitions @Book
           <> jsonDefinitions @Author
+          <> jsonDefinitions @Examples
+          <> jsonDefinitions @Example1
       -- Combine definitions into modules
       modules = Pretty.modules $ Simplification.simplifyDefinition <$> definitions
   -- For each module write contents to file

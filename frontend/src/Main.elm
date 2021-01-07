@@ -2,6 +2,7 @@ module Main exposing (main)
 
 import Api.Api as Api
 import Api.Book exposing (Book)
+import Api.Examples exposing (Examples)
 import Browser exposing (element)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -24,15 +25,26 @@ type alias ApiResult a =
     Result ( Http.Error, Maybe { metadata : Http.Metadata, body : String } ) a
 
 
-type Model
+type alias Model =
+    { booksResponse : Response (List Book)
+    , examplesResponse : Response Examples
+    }
+
+
+type Response a
     = Failure String
     | Loading
-    | Success (List Book)
+    | Success a
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Loading, Api.getBooks |> Cmd.map GotBookResponse )
+    ( { booksResponse = Loading, examplesResponse = Loading }
+    , Cmd.batch
+        [ Api.getBooks |> Cmd.map GotBookResponse
+        , Api.getExamples |> Cmd.map GotExamplesResponse
+        ]
+    )
 
 
 
@@ -41,6 +53,7 @@ init _ =
 
 type Msg
     = GotBookResponse (ApiResult (List Book))
+    | GotExamplesResponse (ApiResult Examples)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -48,11 +61,19 @@ update msg model =
     case msg of
         GotBookResponse result ->
             case result of
-                Ok book ->
-                    ( Success book, Cmd.none )
+                Ok x ->
+                    ( { model | booksResponse = Success x }, Cmd.none )
 
                 Err e ->
-                    ( Failure <| Debug.toString e, Cmd.none )
+                    ( { model | booksResponse = Failure <| Debug.toString e }, Cmd.none )
+
+        GotExamplesResponse result ->
+            case result of
+                Ok x ->
+                    ( { model | examplesResponse = Success x }, Cmd.none )
+
+                Err e ->
+                    ( { model | examplesResponse = Failure <| Debug.toString e }, Cmd.none )
 
 
 
@@ -61,4 +82,7 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div [] [ text <| Debug.toString model ]
+    div []
+        [ div [] [ h1 [] [ text "Books" ], text <| Debug.toString model.booksResponse ]
+        , div [] [ h1 [] [ text "Examples" ], text <| Debug.toString model.examplesResponse ]
+        ]

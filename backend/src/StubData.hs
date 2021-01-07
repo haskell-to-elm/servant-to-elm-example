@@ -30,3 +30,31 @@ stubAuthors =
     Author 6 "Chris Allen & Julie Moronuki",
     Author 7 "Vitaly Bragilevsky"
   ]
+
+-- Experiments with JSON encoding and decoding
+
+stubExamples :: Examples
+stubExamples =
+  Examples
+    { example1 = [Example1A 42 "Hi", Example1B True ()],
+      example2 = [Nothing, Just Nothing, Just (Just ())],
+      example3 = [Nothing, Just Nothing, Just (Just 42)],
+      example4 = Nothing,
+      example5 = Just Nothing,
+      example6 = Just (Just 42)
+    }
+
+{-
+Encoded by Aeson as:
+  {
+    "example1": [
+      { "tag": "Example1A", "field1": 42, "field2": "Hi" },
+      { "tag": "Example1B", "field3": true, "field4": [] }
+    ],
+    "example2": [null, null, []],
+    "example3": [null, null, 42],
+    "example4": null,
+    "example5": null,
+    "example6": 42
+  }
+-}
