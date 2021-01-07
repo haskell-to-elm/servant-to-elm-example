@@ -23,8 +23,8 @@ What's cool here is that [servant-to-elm] does the job of generating types and d
 
 - in `DomainModel.hs`:
   - Define the type
-  - Derive necessary instances, also specify Elm module name for that type (which better keep the same; but you can also store several types in one module, see `Examples` type and corresponding generated module)
-  - Add the type to `typeDefinitions` list - `<> jsonDefinitions @YourNewType`
+  - Derive necessary instances, also specify Elm module name and Elm type (it's better to keep type name the same, but it's convenient to use one module for several coupled types - see `Book`, `NewBook`, and `NewBookAuthor` types and corresponding generated Elm module)
+  - Add the type to `typeDefinitions` list - `jsonDefinitions @YourNewType`
 - Use your type in `Server.hs` or wherever it's intended to
 - Run code-generation again
 

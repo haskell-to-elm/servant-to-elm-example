@@ -24,11 +24,16 @@ import Language.Haskell.To.Elm
 -- or will refer to the type which definition was not written to file:
 typeDefinitions :: [Definition]
 typeDefinitions =
-  jsonDefinitions @Book
-    <> jsonDefinitions @Author
-    <> jsonDefinitions @Examples
-    -- <> jsonDefinitions @Adt1 -- Error in elm decoder
-    <> jsonDefinitions @Adt2
+  concat
+    [ jsonDefinitions @Book,
+      jsonDefinitions @NewBook,
+      jsonDefinitions @NewBookAuthor,
+      jsonDefinitions @Author,
+      jsonDefinitions @NewAuthor,
+      jsonDefinitions @Examples,
+      -- , jsonDefinitions @Adt1 -- Error in elm decoder
+      jsonDefinitions @Adt2
+    ]
 
 data Book = Book
   { bookId :: Int,

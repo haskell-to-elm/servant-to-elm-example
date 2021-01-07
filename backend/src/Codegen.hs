@@ -16,7 +16,6 @@ import Language.Elm.Definition (Definition)
 import Language.Elm.Name (Module)
 import qualified Language.Elm.Pretty as Pretty
 import qualified Language.Elm.Simplification as Simplification
-import Language.Haskell.To.Elm
 import Servant.To.Elm
 import Server
 import System.Directory (createDirectoryIfMissing)
