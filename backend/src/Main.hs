@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingVia #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RankNTypes #-}
@@ -12,11 +13,11 @@ module Main where
 import qualified Data.Aeson as Aeson
 import Data.Foldable
 import qualified Data.HashMap.Lazy as HashMap
-import Data.Proxy
 import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Text.Prettyprint.Doc (Doc)
 import Data.Text.Prettyprint.Doc.Render.Text (hPutDoc)
+import DerivingVia
 import GHC.Generics
 import qualified Generics.SOP as SOP
 import Language.Elm.Name (Module)
@@ -47,6 +48,7 @@ data Book = Book
     authorName :: Text
   }
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
+  deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Book.Book" Book
 
 data Author = Author
   { authorId :: Int,
@@ -82,19 +84,6 @@ serverMain = do
   run port app
 
 -- Code generation
-
-instance HasElmType Book where
-  elmDefinition =
-    Just $ deriveElmTypeDefinition @Book defaultOptions "Api.Book.Book"
-
-instance HasElmDecoder Aeson.Value Book where
-  elmDecoderDefinition =
-    Just $ deriveElmJSONDecoder @Book defaultOptions Aeson.defaultOptions "Api.Book.decoder"
-
-instance HasElmEncoder Aeson.Value Book where
-  elmEncoderDefinition =
-    Just $ deriveElmJSONEncoder @Book defaultOptions Aeson.defaultOptions "Api.Book.encoder"
-
 writeContentsToFile :: forall ann. Module -> Doc ann -> IO ()
 writeContentsToFile moduleName contents = do
   let path = T.unpack $ "../frontend/src/" <> T.intercalate "/" moduleName <> ".elm"
