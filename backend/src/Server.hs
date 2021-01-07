@@ -38,8 +38,8 @@ app =
   where
     policy = simpleCorsResourcePolicy {corsRequestHeaders = ["content-type"]} -- also for POST requests, AFAIK
 
-serverMain :: IO ()
-serverMain = do
+runServer :: IO ()
+runServer = do
   let port = 8080
   putStrLn $ "Starting server at port " <> show port
   run port app
