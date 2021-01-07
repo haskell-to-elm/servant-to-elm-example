@@ -17,7 +17,8 @@ import Language.Haskell.To.Elm
 data Book = Book
   { bookId :: Int,
     title :: Text,
-    authorName :: Text
+    imageUrl :: Text,
+    author :: Author
   }
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Book.Book" Book

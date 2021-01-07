@@ -15,13 +15,15 @@ import Network.Wai.Middleware.Servant.Options
 import Servant
 import StubData
 
-type LibraryAPI = "book" :> Get '[JSON] Book
+type LibraryAPI =
+  "books" :> Get '[JSON] [Book]
+    :<|> "authors" :> Get '[JSON] [Author]
 
 libraryApi :: Proxy LibraryAPI
 libraryApi = Proxy
 
 server :: Server LibraryAPI
-server = pure stubBook
+server = pure stubBooks :<|> pure stubAuthors
 
 app :: Application
 app =
@@ -35,5 +37,5 @@ app =
 serverMain :: IO ()
 serverMain = do
   let port = 8080
-  putStrLn $ "Starting server at " <> show port
+  putStrLn $ "Starting server at port " <> show port
   run port app

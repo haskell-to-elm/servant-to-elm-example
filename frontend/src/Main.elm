@@ -27,12 +27,12 @@ type alias ApiResult a =
 type Model
     = Failure String
     | Loading
-    | Success Book
+    | Success (List Book)
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Loading, Api.getBook |> Cmd.map GotBookResponse )
+    ( Loading, Api.getBooks |> Cmd.map GotBookResponse )
 
 
 
@@ -40,7 +40,7 @@ init _ =
 
 
 type Msg
-    = GotBookResponse (ApiResult Book)
+    = GotBookResponse (ApiResult (List Book))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
