@@ -17,6 +17,7 @@ import StubData
 
 type LibraryAPI =
   "books" :> Get '[JSON] [Book]
+    :<|> ("book" :> ReqBody '[JSON] NewBook :> PostNoContent '[JSON] NoContent) -- Error: can't use PostCreated (which is Verb 'POST 201)
     :<|> "authors" :> Get '[JSON] [Author]
     :<|> "examples" :> Get '[JSON] Examples
 
@@ -26,6 +27,7 @@ libraryApi = Proxy
 server :: Server LibraryAPI
 server =
   pure stubBooks
+    :<|> (\_ -> pure NoContent)
     :<|> pure stubAuthors
     :<|> pure stubExamples
 

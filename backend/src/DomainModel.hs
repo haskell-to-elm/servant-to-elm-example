@@ -77,7 +77,7 @@ data Examples = Examples
     adt2 :: [Adt2],
     -- Maybe Maybe as a value in a list
     example3 :: [Maybe (Maybe Int)],
-    -- Maybe Maybe  as an object field
+    -- Maybe Maybe as an object field
     example4 :: Maybe (Maybe Int),
     example5 :: Maybe (Maybe Int),
     example6 :: Maybe (Maybe Int)
