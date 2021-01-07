@@ -36,8 +36,11 @@ stubAuthors =
 stubExamples :: Examples
 stubExamples =
   Examples
-    { example1 = [Example1A 42 "Hi" {- , Example1B True () -}],
-    -- example2 = [Nothing, Just Nothing, Just (Just ())],
+    { {- example1 =
+        [ Example1A 42 "Hi",
+          -- Example1B True ()
+        ], -}
+      -- example2 = [Nothing, Just Nothing, Just (Just ())],
       example3 = [Nothing, Just Nothing, Just (Just 42)],
       example4 = Nothing,
       example5 = Just Nothing,
