@@ -36,7 +36,7 @@ data Examples = Examples
   { -- A custom sum-type
     example1 :: [Example1],
     -- Maybe Maybe as a value in a list
-    example2 :: [Maybe (Maybe ())],
+    -- example2 :: [Maybe (Maybe ())],
     example3 :: [Maybe (Maybe Int)],
     -- Maybe Maybe  as an object field
     example4 :: Maybe (Maybe Int),
@@ -48,6 +48,6 @@ data Examples = Examples
 
 data Example1
   = Example1A {field1 :: Int, field2 :: Text}
-  | Example1B {field3 :: Bool, field4 :: ()}
+  | Example1B {field3 :: Bool {- , field4 :: () -}}
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Example1.Example1" Example1
