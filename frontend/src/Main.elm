@@ -41,7 +41,7 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( { booksResponse = Loading, examplesResponse = Loading }
     , Cmd.batch
-        [ Api.getBooks |> Cmd.map GotBookResponse
+        [ Api.getBooks Nothing |> Cmd.map GotBookResponse
         , Api.getExamples |> Cmd.map GotExamplesResponse
         ]
     )

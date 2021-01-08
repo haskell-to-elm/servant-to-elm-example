@@ -1,9 +1,11 @@
+{-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 -- |
 -- This module only stores stub data
 module StubData where
 
+import Data.List
 import DomainModel
 
 stubBooks :: [Book]
@@ -21,15 +23,7 @@ stubBooks =
   ]
 
 stubAuthors :: [Author]
-stubAuthors =
-  [ Author 1 "Robert Louis Stevenson",
-    Author 2 "Immanuel Kant",
-    Author 3 "Michael Ende",
-    Author 4 "Alejandro Serrano",
-    Author 5 "Graham Hutton",
-    Author 6 "Chris Allen & Julie Moronuki",
-    Author 7 "Vitaly Bragilevsky"
-  ]
+stubAuthors = nub $ (\Book {author = author} -> author) <$> stubBooks
 
 -- Experiments with JSON encoding and decoding
 
