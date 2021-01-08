@@ -46,9 +46,9 @@ data Book = Book
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Book.Book" Book
 
 data NewBook = NewBook
-  { title :: String,
+  { title :: Text,
     author :: NewBookAuthor,
-    imageUrl :: String
+    imageUrl :: Text
   }
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Book.NewBook" NewBook
@@ -66,7 +66,9 @@ data Author = Author
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Author.Author" Author
 
-newtype NewAuthor = NewAuthor {name :: String}
+newtype NewAuthor = NewAuthor
+  { name :: Text
+  }
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Author.NewAuthor" NewAuthor
 
@@ -84,7 +86,9 @@ data CodegenExperiment = CodegenExperiment
     listOfMaybeMaybeInt :: [Maybe (Maybe Int)],
     fieldMaybeMaybeInt1 :: Maybe (Maybe Int),
     fieldMaybeMaybeInt2 :: Maybe (Maybe Int),
-    fieldMaybeMaybeInt3 :: Maybe (Maybe Int)
+    fieldMaybeMaybeInt3 :: Maybe (Maybe Int),
+    text :: Text,
+    string :: String
     -- unit :: () -- Error: no instance for HasElmType ()
   }
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)

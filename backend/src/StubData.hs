@@ -33,6 +33,8 @@ codegenExperiment =
       listOfMaybeMaybeInt = [Nothing, Just Nothing, Just (Just 42)],
       fieldMaybeMaybeInt1 = Nothing,
       fieldMaybeMaybeInt2 = Just Nothing,
-      fieldMaybeMaybeInt3 = Just (Just 42)
+      fieldMaybeMaybeInt3 = Just (Just 42),
+      text = "some Data.Text value",
+      string = "some String value"
       -- unit = ()
     }

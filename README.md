@@ -34,7 +34,7 @@ What's cool here is that [servant-to-elm] does the job of generating types and d
 ### Design choices and alternatives
 
 - Old Elm files will not be deleted automatically when generating code, please be aware of that and delete them manually (automatic deletion may be implemented later).
-- One of the alternatives to this approach is GraphQL, and there is a [Haskell/Elm full-stack GraphQL example app](https://github.com/higherkindness/mu-graphql-example-elm)
+- One of the alternatives to this approach is GraphQL, and there is a [Haskell/Elm full-stack GraphQL example app](https://github.com/higherkindness/mu-graphql-example-elm). This example app was shamelessly inspired by that example.
 
 [stack]: https://docs.haskellstack.org/en/stable/README/#how-to-install
 [elm]: https://guide.elm-lang.org/install/elm.html

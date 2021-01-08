@@ -1,50 +1,36 @@
 module Main exposing (main)
 
-import Api.Api as Api
-import Api.Book exposing (Book)
-import Api.CodegenExperiment exposing (CodegenExperiment)
 import Browser exposing (element)
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import Http
-import Json.Decode exposing (Decoder, field, string)
+import Editor
+import Html exposing (Html, a, button, div, h1, img, input, p, span, text)
+import Html.Attributes exposing (class, href, placeholder, rel, src, target, type_, value)
+import Html.Events exposing (onClick, onInput)
+import RemoteData
+import Search
 
 
 main : Program () Model Msg
 main =
     element
-        { init = init
+        { init = always init
         , view = view
         , update = update
         , subscriptions = always Sub.none
         }
 
 
-type alias ApiResult a =
-    Result ( Http.Error, Maybe { metadata : Http.Metadata, body : String } ) a
+type Model
+    = SearchPage Search.Model
+    | EditorPage Editor.Model
 
 
-type alias Model =
-    { booksResponse : Response (List Book)
-    , examplesResponse : Response CodegenExperiment
-    }
-
-
-type Response a
-    = Failure String
-    | Loading
-    | Success a
-
-
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( { booksResponse = Loading, examplesResponse = Loading }
-    , Cmd.batch
-        [ Api.getBooks Nothing |> Cmd.map GotBookResponse
-        , Api.getExperiment |> Cmd.map GotExamplesResponse
-        ]
-    )
+init : ( Model, Cmd Msg )
+init =
+    let
+        ( model, cmd ) =
+            Search.init
+    in
+    ( SearchPage model, Cmd.map SearchMsg cmd )
 
 
 
@@ -52,37 +38,70 @@ init _ =
 
 
 type Msg
-    = GotBookResponse (ApiResult (List Book))
-    | GotExamplesResponse (ApiResult CodegenExperiment)
+    = SearchMsg Search.Msg
+    | EditorMsg Editor.Msg
 
 
+{-| This update function delegates its work to each page's update functions.
+However, in real apps routing should be implemented differently.
+-}
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        GotBookResponse result ->
-            case result of
-                Ok x ->
-                    ( { model | booksResponse = Success x }, Cmd.none )
+update wrappedMsg wrappedModel =
+    case ( wrappedMsg, wrappedModel ) of
+        -- Redirect to Editor page without additional actions
+        ( SearchMsg Search.OpenEditorClicked, SearchPage model ) ->
+            Editor.init
+                |> Tuple.mapBoth EditorPage (Cmd.map EditorMsg)
 
-                Err e ->
-                    ( { model | booksResponse = Failure <| Debug.toString e }, Cmd.none )
+        ( SearchMsg msg, SearchPage model ) ->
+            Search.update msg model
+                |> Tuple.mapBoth SearchPage (Cmd.map SearchMsg)
 
-        GotExamplesResponse result ->
-            case result of
-                Ok x ->
-                    ( { model | examplesResponse = Success x }, Cmd.none )
+        -- Redirect to Search page without additional actions
+        ( EditorMsg Editor.CancelClicked, EditorPage model ) ->
+            Search.init
+                |> Tuple.mapBoth SearchPage (Cmd.map SearchMsg)
 
-                Err e ->
-                    ( { model | examplesResponse = Failure <| Debug.toString e }, Cmd.none )
+        -- Redirect to Search page and use the book title
+        ( EditorMsg (Editor.GotCreationResponse (RemoteData.Success newBookTitle)), EditorPage model ) ->
+            update
+                (SearchMsg <| Search.QueryChanged newBookTitle)
+                (SearchPage <| Tuple.first Search.init)
+
+        ( EditorMsg msg, EditorPage model ) ->
+            Editor.update msg model
+                |> Tuple.mapBoth EditorPage (Cmd.map EditorMsg)
+
+        _ ->
+            ( wrappedModel, Cmd.none )
 
 
 
 -- views
 
 
-view : Model -> Html Msg
-view model =
+heading : Html msg
+heading =
     div []
-        [ div [] [ h1 [] [ text "Books" ], text <| Debug.toString model.booksResponse ]
-        , div [] [ h1 [] [ text "CodegenExperiment" ], text <| Debug.toString model.examplesResponse ]
+        [ h1 [] [ text "Library example" ]
+        , p [] [ text "Made with Servant (Haskell) and Elm," ]
+        , p []
+            [ text "Using "
+            , a [ href "https://github.com/folq/servant-to-elm", target "_blank" ]
+                [ text "servant-to-elm" ]
+            , text " library."
+            ]
+        ]
+
+
+view : Model -> Html Msg
+view wrappedModel =
+    div [ class "app-container" ]
+        [ heading
+        , case wrappedModel of
+            SearchPage model ->
+                Html.map SearchMsg (Search.view model)
+
+            EditorPage model ->
+                Html.map EditorMsg (Editor.view model)
         ]

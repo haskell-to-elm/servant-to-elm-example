@@ -183,6 +183,12 @@ button:disabled {
   font-size: 13px;
 }
 
+/* Codegen experiment */
+
+.codegen-experiment-output {
+  white-space: pre-wrap;
+}
+
 /* Editor page */
 
 .author-input__container {
