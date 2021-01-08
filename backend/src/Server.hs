@@ -44,7 +44,7 @@ type LibraryAPI =
     :<|> "book" :> ReqBody '[JSON] NewBook :> PostNoContent '[JSON] NoContent -- Missing implementation: can't use PostCreated (which is Verb 'POST 201)
     :<|> "authors" :> QueryParam "query" Text :> Get '[JSON] [Author]
     :<|> "search" :> QueryParam "query" Text :> Get '[JSON] UniversalSearchResults -- combined search for data of all types
-    :<|> "examples" :> Get '[JSON] Examples
+    :<|> "experiment" :> Get '[JSON] CodegenExperiment
 
 server :: Server LibraryAPI
 server =
@@ -52,7 +52,7 @@ server =
     :<|> (\_ -> pure NoContent)
     :<|> authorsHandler
     :<|> searchHandler
-    :<|> pure stubExamples
+    :<|> pure codegenExperiment
 
 booksHandler :: Maybe Text -> Handler [Book]
 booksHandler (Just query) =

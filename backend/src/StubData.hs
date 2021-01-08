@@ -25,43 +25,14 @@ stubBooks =
 stubAuthors :: [Author]
 stubAuthors = nub $ (\Book {author = author} -> author) <$> stubBooks
 
--- Experiments with JSON encoding and decoding
-
-stubExamples :: Examples
-stubExamples =
-  Examples
+codegenExperiment :: CodegenExperiment
+codegenExperiment =
+  CodegenExperiment
     { -- adt1 = [Adt1A 42 "Hi", Adt1B True],
       adt2 = [Adt2A 42 "Hi", Adt2B True],
-      example3 = [Nothing, Just Nothing, Just (Just 42)],
-      example4 = Nothing,
-      example5 = Just Nothing,
-      example6 = Just (Just 42)
+      listOfMaybeMaybeInt = [Nothing, Just Nothing, Just (Just 42)],
+      fieldMaybeMaybeInt1 = Nothing,
+      fieldMaybeMaybeInt2 = Just Nothing,
+      fieldMaybeMaybeInt3 = Just (Just 42)
       -- unit = ()
     }
-
-{-
-
-Encoded by Aeson as:
-
-  {
-    "adt2": [
-      { "tag": "Adt2A", "contents": [42, "Hi"] },
-      { "tag": "Adt2B", "contents": true }
-    ],
-    "example4": null,
-    "example5": null,
-    "example3": [null, null, 42],
-    "example6": 42
-  }
-
-Decoded in Elm as:
-
-  Success {
-    adt2 = [Adt2A 42 "Hi",Adt2B True],
-    example3 = [Nothing,Nothing,Just (Just 42)],
-    example4 = Nothing,
-    example5 = Nothing,
-    example6 = Just (Just 42)
-  }
-
--}
