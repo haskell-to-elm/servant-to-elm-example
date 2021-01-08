@@ -38,6 +38,5 @@ What's cool here is that [servant-to-elm] does the job of generating types and d
 
 [stack]: https://docs.haskellstack.org/en/stable/README/#how-to-install
 [elm]: https://guide.elm-lang.org/install/elm.html
-[elm-live]: https://www.elm-live.com/
 [servant]: https://www.servant.dev/
 [servant-to-elm]: https://github.com/folq/servant-to-elm
