@@ -31,6 +31,7 @@ typeDefinitions =
       jsonDefinitions @Author,
       jsonDefinitions @NewAuthor,
       jsonDefinitions @Examples,
+      jsonDefinitions @UniversalSearchResults,
       -- , jsonDefinitions @Adt1 -- Error in elm decoder
       jsonDefinitions @Adt2
     ]
@@ -68,6 +69,13 @@ data Author = Author
 newtype NewAuthor = NewAuthor {name :: String}
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Author.NewAuthor" NewAuthor
+
+data UniversalSearchResults = UniversalSearchResults
+  { authors :: [Author],
+    books :: [Book]
+  }
+  deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
+  deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Search.UniversalSearchResults" UniversalSearchResults
 
 -- Experiments with JSON encoding and decoding
 

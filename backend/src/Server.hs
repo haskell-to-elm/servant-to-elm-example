@@ -34,28 +34,35 @@ app =
   where
     policy = simpleCorsResourcePolicy {corsRequestHeaders = ["content-type"]} -- also for POST requests, AFAIK
 
+libraryApi :: Proxy LibraryAPI
+libraryApi = Proxy
+
 -- This API is not intended to look like ideomatic REST.
 -- Instead, it is shaped to match the usage scenarios.
 type LibraryAPI =
   "books" :> QueryParam "query" Text :> Get '[JSON] [Book]
     :<|> "book" :> ReqBody '[JSON] NewBook :> PostNoContent '[JSON] NoContent -- Missing implementation: can't use PostCreated (which is Verb 'POST 201)
     :<|> "authors" :> QueryParam "query" Text :> Get '[JSON] [Author]
+    :<|> "search" :> QueryParam "query" Text :> Get '[JSON] UniversalSearchResults -- combined search for data of all types
     :<|> "examples" :> Get '[JSON] Examples
-
-libraryApi :: Proxy LibraryAPI
-libraryApi = Proxy
 
 server :: Server LibraryAPI
 server =
-  books
+  booksHandler
     :<|> (\_ -> pure NoContent)
-    :<|> authors
+    :<|> authorsHandler
+    :<|> searchHandler
     :<|> pure stubExamples
 
-books :: Maybe Text -> Handler [Book]
-books Nothing = pure stubBooks
-books (Just query) = pure $ filter (\Book {title = title} -> (T.isInfixOf `on` T.toLower) query title) stubBooks
+booksHandler :: Maybe Text -> Handler [Book]
+booksHandler (Just query) =
+  pure $ filter (\Book {title = title} -> (T.isInfixOf `on` T.toLower) query title) stubBooks
+booksHandler _ = pure stubBooks
 
-authors :: Maybe Text -> Handler [Author]
-authors Nothing = pure stubAuthors
-authors (Just query) = pure $ filter (\Author {name = name} -> (T.isInfixOf `on` T.toLower) query name) stubAuthors
+authorsHandler :: Maybe Text -> Handler [Author]
+authorsHandler (Just query) =
+  pure $ filter (\Author {name = name} -> (T.isInfixOf `on` T.toLower) query name) stubAuthors
+authorsHandler _ = pure stubAuthors
+
+searchHandler :: Maybe Text -> Handler UniversalSearchResults
+searchHandler mQuery = UniversalSearchResults <$> authorsHandler mQuery <*> booksHandler mQuery
