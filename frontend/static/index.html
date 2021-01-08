@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <title>servant-to-elm-example</title>
+    <!-- Elm main bundle -->
+    <script type="text/javascript" src="/bundle.js"></script>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+    <noscript>
+        You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="elm-node"></div>
+    <script>
+      const app = Elm.Main.init({
+        node: document.getElementById("elm-node"),
+        flags: window.navigator.language,
+      });
+    </script>
+</body>
+</html>

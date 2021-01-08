@@ -6,9 +6,10 @@ What's cool here is that [servant-to-elm] does the job of generating types and d
 
 ## How to run
 
-- Install [Stack], [Elm], and [Elm-live]
-- Generate Elm from Haskell and start the server `cd backend && stack run`
-- Run frontend web app `cd frontend && elm-live src/Main.elm --open`
+- Install [Stack] and [Elm]
+- Install frontend dependencies (it's only `elm-live`) `cd frontend && npm i`
+- Run code generation and start the server on port 8080 `cd backend && stack run`
+- Run frontend web app in dev mode on port 8000, and open the page in browser `cd frontend && npm start`
 
 ## Domain model: Library
 
@@ -18,6 +19,8 @@ What's cool here is that [servant-to-elm] does the job of generating types and d
 - Author's name must be unique
 
 ## Technical notes
+
+- If you are using VSCode and you want to open both frontend and backend as a single workspace, use `File > Open Workspace` and choose `servant-to-elm-example.code-workspace`. In this scenario VSCode will work correct with for both languages simultaneously. Also the editor may recommend you extensions, and installing them is a wise choice.
 
 ### Adding new types
 
