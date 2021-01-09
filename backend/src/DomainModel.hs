@@ -10,6 +10,7 @@
 module DomainModel where
 
 import qualified Data.Aeson as Aeson
+import Data.Int
 import Data.Text (Text)
 import DerivingVia
 import GHC.Generics
@@ -88,7 +89,14 @@ data CodegenExperiment = CodegenExperiment
     fieldMaybeMaybeInt2 :: Maybe (Maybe Int),
     fieldMaybeMaybeInt3 :: Maybe (Maybe Int),
     text :: Text,
-    string :: String
+    string :: String,
+    int :: [Int],
+    -- int16 :: [Int16], -- No instance
+    -- int32 :: [Int32], -- No instance
+    -- int64 :: [Int64], -- No instance
+    -- integer :: [Integer], -- No instance
+    -- float :: [Float], -- No instance
+    double :: [Double]
     -- unit :: () -- Error: no instance for HasElmType ()
   }
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)

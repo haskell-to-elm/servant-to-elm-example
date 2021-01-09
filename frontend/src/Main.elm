@@ -86,7 +86,7 @@ heading =
         [ h1 [] [ text "Library example" ]
         , p [] [ text "Made with Servant (Haskell) and Elm," ]
         , p []
-            [ text "Using "
+            [ text "using "
             , a [ href "https://github.com/folq/servant-to-elm", target "_blank" ]
                 [ text "servant-to-elm" ]
             , text " library."

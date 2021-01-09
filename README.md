@@ -21,6 +21,7 @@ What's cool here is that [servant-to-elm] does the job of generating types and d
 ## Technical notes
 
 - If you are using VSCode and you want to open both frontend and backend as a single workspace, use `File > Open Workspace` and choose `servant-to-elm-example.code-workspace`. In this scenario VSCode will work correct with for both languages simultaneously. Also the editor may recommend you extensions, and installing them is a wise choice.
+- This app was not tested on Windows systems yet. While is not a showcase of a cross-platform compatibility, you can still open an issue or PR if something does not work as expected.
 
 ### Adding new types
 
