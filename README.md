@@ -1,5 +1,7 @@
 # servant-to-elm-example
 
+![servant-to-elm-example](screenshot.png)
+
 This example is a full-stack web application, built in a typesafe functional way.
 
 What's cool here is that [servant-to-elm] does the job of generating types and decoders/encoders from Haskell types and [Servant] definition to Elm, which not only catches regressions in the compile-time but also provides ready (and highly configurable) Elm functions to fetch necessary data from the server.
