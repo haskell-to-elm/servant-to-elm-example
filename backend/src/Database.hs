@@ -98,7 +98,8 @@ queryBooks conn (Just queryString) =
     \ FROM books \
     \ JOIN authors \
     \ ON books.author_id=authors.id \
-    \ WHERE books.title LIKE ?"
+    \ WHERE books.title LIKE ? \
+    \ ORDER BY books.title"
     (Only $ toPattern queryString)
 -- in case of in-memory database omiting regex filter really won't improve anything,
 -- but in filesystem-based dbs like Postges a different story.
@@ -108,12 +109,13 @@ queryBooks conn Nothing =
     "SELECT books.id, books.title, books.image_url, authors.id, authors.name \
     \ FROM books \
     \ JOIN authors \
-    \ ON books.author_id=authors.id"
+    \ ON books.author_id=authors.id \
+    \ ORDER BY books.title"
 
 queryAuthors :: Connection -> Maybe Text -> IO [Author]
 queryAuthors conn (Just queryString) =
   query
     conn
-    "SELECT authors.id, authors.name FROM authors WHERE authors.name LIKE ?"
+    "SELECT id, name FROM authors WHERE name LIKE ? ORDER BY name"
     (Only $ toPattern queryString)
 queryAuthors conn Nothing = query_ conn "SELECT authors.id, authors.name FROM authors"
