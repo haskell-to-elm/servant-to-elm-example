@@ -5,6 +5,9 @@
 -- This module is responsible for dealing with the database
 module Database where
 
+import Control.Exception (throw, try)
+import Control.Monad.Except
+import Data.Bifunctor (first)
 import Data.Foldable (traverse_)
 import Data.Int (Int64)
 import Data.Text (Text)
@@ -29,12 +32,13 @@ initDb :: Connection -> IO ()
 initDb conn = do
   putStrLn "Populationg Database with stub data ..."
   createTables
-  traverse_ (uncurry insertAuthorAndBooks) stubBooks
+  runExceptT $ traverse_ (uncurry insertAuthorAndBooks) stubBooks
   (query_ conn "SELECT id, name FROM authors" :: IO [Author]) >>= print
     >>= print
   where
     createTables :: IO ()
     createTables = do
+      execute_ conn "PRAGMA foreign_keys = ON" -- Foreign keys don't work in SQLite without this
       execute_
         conn
         "CREATE TABLE authors ( id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE )"
@@ -48,7 +52,7 @@ initDb conn = do
         \ CONSTRAINT unique_book_title_per_author UNIQUE (title, author_id) \
         \ )"
 
-    insertAuthorAndBooks :: NewAuthor -> [NewBook] -> IO ()
+    insertAuthorAndBooks :: NewAuthor -> [NewBook] -> ExceptT UserReadableError IO ()
     insertAuthorAndBooks newAuthor books = do
       authorId <- insertAuthor conn newAuthor
       traverse_ (insertBook conn) $
@@ -60,28 +64,45 @@ not only in the context of handling requests (which is Server),
 but also for seeding the database (which is IO) -}
 
 -- |
--- Returns id because it's useful for seeding the database
-insertAuthor :: Connection -> NewAuthor -> IO Int64
-insertAuthor conn NewAuthor {name = name} = do
-  execute conn "INSERT INTO authors (name) VALUES (?)" (Only name)
-  lastInsertRowId conn
+-- Provides user-readable error about domain model constraints and other expected situations
+newtype UserReadableError = UserReadableError Text
 
 -- |
--- Returns id just to preserve style, never used :D
-insertBook :: Connection -> NewBook -> IO Int64
+-- Returns id because it's useful for seeding the database
+-- catches only specific kind of error, which are normal and expected
+insertAuthor :: Connection -> NewAuthor -> ExceptT UserReadableError IO Int64
+insertAuthor conn NewAuthor {name = name} =
+  withExceptT transformError . ExceptT . try $ do
+    execute conn "INSERT INTO authors (name) VALUES (?)" (Only name)
+    lastInsertRowId conn
+  where
+    transformError (SQLError ErrorConstraint "UNIQUE constraint failed: authors.name" _) =
+      UserReadableError "Author with such name already exists. The author's name must be unique."
+
+insertBook :: Connection -> NewBook -> ExceptT UserReadableError IO Int64
 insertBook conn NewBook {title = title, author = author, imageUrl = imageUrl} =
-  case author of
-    ExistingAuthorId existingId -> do
-      execute conn "INSERT INTO books (title, author_id, image_url) VALUES (?, ?, ?)" (title, existingId, imageUrl)
-      lastInsertRowId conn
-    -- "Exclusive" transaction provides highest isolation level in SQLite, AFAIK.
-    -- Any exception, be it database or IO, leads to rollback.
-    -- So, an Author will be written only if a Book can be written.
-    -- This can happen, for example, if we put one more uniqueness constraint on the books table.
-    CreateNewAuthor newAuthor -> withExclusiveTransaction conn $ do
-      authorId <- insertAuthor conn newAuthor
-      execute conn "INSERT INTO books (title, author_id, image_url) VALUES (?, ?, ?)" (title, authorId, imageUrl)
-      lastInsertRowId conn
+  -- "Exclusive" transaction provides highest isolation level in SQLite, AFAIK.
+  -- Any exception, be it database or IO, leads to rollback.
+  -- So, an Author will be written only if a Book can be written.
+  -- This can happen, for example, if we put one more uniqueness constraint on the books table.
+  -- FIXME: transactions are broken because there are no IO exceptions now (refactor to manual cancellation)
+  ExceptT . withExclusiveTransaction conn $ do
+    eitherAuthorId <-
+      ( case author of
+          ExistingAuthorId x -> pure . Right $ fromIntegral x
+          CreateNewAuthor newAuthor -> runExceptT $ insertAuthor conn newAuthor
+        )
+    case eitherAuthorId of
+      Right x -> fmap (first transformError) . try $ do
+        execute conn "INSERT INTO books (title, author_id, image_url) VALUES (?, ?, ?)" (title, x, imageUrl)
+        lastInsertRowId conn
+      Left _ -> pure eitherAuthorId
+  where
+    transformError (SQLError ErrorConstraint "UNIQUE constraint failed: books.title, books.author_id" _) =
+      UserReadableError "This author already has a book with such a title. Book title must be unique per author."
+    transformError (SQLError ErrorConstraint "FOREIGN KEY constraint failed" _) =
+      UserReadableError "An author with such an id does not exist."
+    transformError e = throw e
 
 -- |
 -- SQL has special syntax for regular expressions

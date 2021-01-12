@@ -7,9 +7,11 @@
 --  and olso functions that run the server
 module Server where
 
-import Control.Exception (try)
+import Control.Monad.Except (runExceptT)
 import Control.Monad.IO.Class
 import Data.Text (Text)
+import qualified Data.Text.Lazy as LT
+import qualified Data.Text.Lazy.Encoding as LTE
 import Database
 import Database.SQLite.Simple
 import DomainModel
@@ -66,16 +68,10 @@ server conn =
 
     postBook :: NewBook -> Handler NoContent
     postBook newBook = do
-      insertionResult <- liftIO . try $ insertBook conn newBook
-      ( case insertionResult of
-          (Right _) -> pure NoContent
-          (Left (SQLError ErrorConstraint description c))
-            | description == "UNIQUE constraint failed: books.title, books.author_id" ->
-              throwError $ err409 {errBody = "This author already has a book with such a title. Book title must be unique per author."}
-            | description == "UNIQUE constraint failed: authors.name" ->
-              throwError $ err409 {errBody = "Author with such name already exists. The author's name must be unique."}
-          _ -> throwError err500
-        )
+      insertionResult <- liftIO . runExceptT $ insertBook conn newBook
+      case insertionResult of
+        Right _ -> pure NoContent
+        Left (UserReadableError e) -> throwError $ err400 {errBody = LTE.encodeUtf8 $ LT.fromStrict e}
 
     -- combined search for data of all types
     search :: Maybe Text -> Handler UniversalSearchResults

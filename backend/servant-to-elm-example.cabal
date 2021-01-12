@@ -40,3 +40,4 @@ executable servant-to-elm-example
     , wai-extra
     , servant-options
     , sqlite-simple
+    , mtl
