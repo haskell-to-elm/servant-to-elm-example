@@ -3,7 +3,7 @@ module Editor exposing (Model, Msg(..), init, update, view)
 import Api.Api as Api
 import Api.Author exposing (Author, NewAuthor)
 import Api.Book exposing (NewBook, NewBookAuthor(..))
-import Helpers
+import Helpers exposing (DetailedError)
 import Html exposing (Html, a, button, div, h1, input, label, p, span, text)
 import Html.Attributes exposing (class, disabled, for, href, id, placeholder, rel, target, type_, value)
 import Html.Events exposing (onClick, onInput)
@@ -13,7 +13,7 @@ import Task exposing (Task)
 
 
 type AuthorInput
-    = NewAuthorByName String (RemoteData Http.Error (List Author))
+    = NewAuthorByName String (RemoteData DetailedError (List Author))
     | ExistingAuthor Author
 
 
@@ -21,7 +21,7 @@ type alias Model =
     { bookTitle : String
     , bookImage : String
     , authorInput : AuthorInput
-    , createBookResponse : RemoteData Http.Error String
+    , createBookResponse : RemoteData DetailedError String
     }
 
 
@@ -44,12 +44,12 @@ type Msg
     = BookTitleChanged String
     | BookImageChanged String
     | AuthorNameChanged String
-    | GotAuthorsResponse (RemoteData Http.Error (List Author))
+    | GotAuthorsResponse (RemoteData DetailedError (List Author))
     | SelectAuthorClicked Author
     | DeselectAuthorClicked
     | CancelClicked
     | SubmitClicked
-    | GotCreationResponse (RemoteData Http.Error String)
+    | GotCreationResponse (RemoteData DetailedError String)
 
 
 submitBook : AuthorInput -> String -> String -> Cmd Msg
@@ -64,7 +64,7 @@ submitBook authorInput bookTitle bookCover =
                     CreateNewAuthor <| NewAuthor <| String.trim authorName
     in
     Api.postBook (NewBook bookTitle author bookCover)
-        |> Cmd.map (Helpers.toRemoteData >> RemoteData.map (always bookTitle) >> GotCreationResponse)
+        |> Cmd.map (RemoteData.fromResult >> RemoteData.map (always bookTitle) >> GotCreationResponse)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -99,7 +99,7 @@ update msg model =
                                 , createBookResponse = RemoteData.NotAsked
                               }
                             , Api.getAuthors (Just trimmedStr)
-                                |> Cmd.map (Helpers.toRemoteData >> GotAuthorsResponse)
+                                |> Cmd.map (RemoteData.fromResult >> GotAuthorsResponse)
                             )
 
                 ExistingAuthor _ ->
@@ -168,7 +168,7 @@ bookImageInput isSubmitting bookImage =
         ]
 
 
-showAuthorsResponse : RemoteData Http.Error (List Author) -> Html Msg
+showAuthorsResponse : RemoteData DetailedError (List Author) -> Html Msg
 showAuthorsResponse data =
     case data of
         RemoteData.NotAsked ->
@@ -219,7 +219,7 @@ authorNameInput isSubmitting model =
                 ]
 
 
-showCreateBookResponse : RemoteData Http.Error a -> Html msg
+showCreateBookResponse : RemoteData DetailedError a -> Html msg
 showCreateBookResponse data =
     case data of
         RemoteData.Loading ->

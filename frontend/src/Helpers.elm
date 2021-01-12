@@ -4,35 +4,37 @@ import Http
 import RemoteData exposing (RemoteData(..))
 
 
-{-| Show readable error message
+{-| Error and possibly response body
 -}
-showError : Http.Error -> String
-showError err =
-    case err of
-        Http.NetworkError ->
-            "Network error"
-
-        Http.BadUrl _ ->
-            "BadUrl"
-
-        Http.Timeout ->
-            "Timeout"
-
-        Http.BadStatus _ ->
-            "BadStatus"
-
-        Http.BadBody _ ->
-            "BadStatus"
+type alias DetailedError =
+    ( Http.Error, Maybe { metadata : Http.Metadata, body : String } )
 
 
-{-| This is how generated Elm resopnse looks like
+{-| This is how generated Elm response looks like
 -}
 type alias GeneratedResult a =
-    Result ( Http.Error, Maybe { metadata : Http.Metadata, body : String } ) a
+    Result DetailedError a
 
 
-{-| Wrap successful result in RemoteData or drop response body from failure
+{-| Show readable error message
 -}
-toRemoteData : GeneratedResult a -> RemoteData Http.Error a
-toRemoteData =
-    RemoteData.fromResult >> RemoteData.mapError Tuple.first
+showError : DetailedError -> String
+showError ( err, response ) =
+    case ( err, response ) of
+        ( _, Just { body } ) ->
+            body
+
+        ( Http.NetworkError, x ) ->
+            "Network Error"
+
+        ( Http.BadUrl _, _ ) ->
+            "Bad Url"
+
+        ( Http.Timeout, _ ) ->
+            "Timeout"
+
+        ( Http.BadStatus _, _ ) ->
+            "Bad Status"
+
+        ( Http.BadBody _, _ ) ->
+            "Bad Body"

@@ -5,7 +5,7 @@ import Api.Author exposing (Author)
 import Api.Book exposing (Book)
 import Api.CodegenExperiment exposing (CodegenExperiment)
 import Api.Search exposing (UniversalSearchResults)
-import Helpers
+import Helpers exposing (DetailedError)
 import Html exposing (Html, a, button, div, h1, img, input, p, pre, span, text)
 import Html.Attributes exposing (class, disabled, href, placeholder, rel, src, target, type_, value)
 import Html.Events exposing (onClick, onInput)
@@ -17,8 +17,8 @@ import Task exposing (Task)
 
 type alias Model =
     { query : String
-    , searchResponse : RemoteData Http.Error UniversalSearchResults
-    , experimentResponse : RemoteData Http.Error CodegenExperiment
+    , searchResponse : RemoteData DetailedError UniversalSearchResults
+    , experimentResponse : RemoteData DetailedError CodegenExperiment
     }
 
 
@@ -28,15 +28,15 @@ init =
       , searchResponse = RemoteData.NotAsked
       , experimentResponse = RemoteData.NotAsked
       }
-    , Api.getExperiment |> Cmd.map (Helpers.toRemoteData >> GotExperimentResponse)
+    , Api.getExperiment |> Cmd.map (RemoteData.fromResult >> GotExperimentResponse)
     )
 
 
 type Msg
     = QueryChanged String
-    | GotSearchResponse (RemoteData Http.Error UniversalSearchResults)
+    | GotSearchResponse (RemoteData DetailedError UniversalSearchResults)
     | OpenEditorClicked
-    | GotExperimentResponse (RemoteData Http.Error CodegenExperiment)
+    | GotExperimentResponse (RemoteData DetailedError CodegenExperiment)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -49,7 +49,7 @@ update msg model =
 
                 trimmedStr ->
                     ( { model | query = queryStr, searchResponse = RemoteData.Loading }
-                    , Api.getSearch (Just trimmedStr) |> Cmd.map (Helpers.toRemoteData >> GotSearchResponse)
+                    , Api.getSearch (Just trimmedStr) |> Cmd.map (RemoteData.fromResult >> GotSearchResponse)
                     )
 
         GotSearchResponse res ->
@@ -96,7 +96,7 @@ showSearchResults { authors, books } =
             div [ class "search-results fade-in" ] items
 
 
-showSearchResponse : RemoteData Http.Error UniversalSearchResults -> Html Msg
+showSearchResponse : RemoteData DetailedError UniversalSearchResults -> Html Msg
 showSearchResponse data =
     case data of
         RemoteData.NotAsked ->
@@ -112,7 +112,7 @@ showSearchResponse data =
             showSearchResults results
 
 
-showExperimentResponse : RemoteData Http.Error CodegenExperiment -> Html Msg
+showExperimentResponse : RemoteData DetailedError CodegenExperiment -> Html Msg
 showExperimentResponse data =
     case data of
         RemoteData.NotAsked ->
