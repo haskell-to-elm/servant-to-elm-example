@@ -81,23 +81,27 @@ insertAuthor conn NewAuthor {name = name} =
 
 insertBook :: Connection -> NewBook -> ExceptT UserReadableError IO Int64
 insertBook conn NewBook {title = title, author = author, imageUrl = imageUrl} =
-  -- "Exclusive" transaction provides highest isolation level in SQLite, AFAIK.
-  -- Any exception, be it database or IO, leads to rollback.
-  -- So, an Author will be written only if a Book can be written.
-  -- This can happen, for example, if we put one more uniqueness constraint on the books table.
-  -- FIXME: transactions are broken because there are no IO exceptions now (refactor to manual cancellation)
-  ExceptT . withExclusiveTransaction conn $ do
-    eitherAuthorId <-
+  do
+    begin
+    authorId <-
       ( case author of
-          ExistingAuthorId x -> pure . Right $ fromIntegral x
-          CreateNewAuthor newAuthor -> runExceptT $ insertAuthor conn newAuthor
+          ExistingAuthorId x -> pure $ fromIntegral x
+          CreateNewAuthor newAuthor -> insertAuthor conn newAuthor
         )
-    case eitherAuthorId of
-      Right x -> fmap (first transformError) . try $ do
-        execute conn "INSERT INTO books (title, author_id, image_url) VALUES (?, ?, ?)" (title, x, imageUrl)
-        lastInsertRowId conn
-      Left _ -> pure eitherAuthorId
+    bookId <- ExceptT . fmap (first transformError) . try $ do
+      execute conn "INSERT INTO books (title, author_id, image_url) VALUES (?, ?, ?)" (title, authorId, imageUrl)
+      lastInsertRowId conn
+    commit
+    pure bookId
+    -- Errors lead to rollback.
+    -- So, an Author will be written only if a Book can be written.
+    -- This can happen, for example, if we put one more uniqueness constraint on the books table
+    `catchError` (\e -> rollback >> throwError e)
   where
+    -- "Exclusive" transaction provides highest isolation level in SQLite.
+    begin = lift $ execute_ conn "BEGIN EXCLUSIVE TRANSACTION"
+    commit = lift $ execute_ conn "COMMIT TRANSACTION"
+    rollback = lift $ execute_ conn "ROLLBACK TRANSACTION"
     transformError (SQLError ErrorConstraint "UNIQUE constraint failed: books.title, books.author_id" _) =
       UserReadableError "This author already has a book with such a title. Book title must be unique per author."
     transformError (SQLError ErrorConstraint "FOREIGN KEY constraint failed" _) =
