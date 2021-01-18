@@ -18,7 +18,6 @@ import DomainModel
 import Network.Wai.Handler.Warp
 import Network.Wai.Middleware.Cors
 import Network.Wai.Middleware.RequestLogger (logStdoutDev)
-import Network.Wai.Middleware.Servant.Options
 import Servant
 import StubData
 

@@ -6,12 +6,28 @@ This example is a full-stack web application, built in a typesafe functional way
 
 What's cool here is that [servant-to-elm] does the job of generating types and decoders/encoders from Haskell types and [Servant] definition to Elm, which not only catches regressions in the compile-time but also provides ready (and highly configurable) Elm functions to fetch necessary data from the server.
 
-## How to run
+## Install
 
 - Install [Stack] and [Elm]
-- Install frontend dependencies (it's only `elm-live`) `cd frontend && npm i`
-- Run code generation and start the server on port 8080 `cd backend && stack run`
-- Run frontend web app in dev mode on port 8000, and open the page in browser `cd frontend && npm start`
+- Run code generation
+  ```sh
+  cd backend && stack run codegen
+  ```
+- Install frontend dependencies (it's only `elm-live`)
+  ```sh
+  cd frontend && npm i
+  ```
+
+## Run
+
+- Start the server on port 8080:
+  ```sh
+  cd backend && stack run server
+  ```
+- Run frontend web app in dev mode, and [localhost:8000](http://localhost:8000) opens in browser automatically:
+  ```sh
+  cd frontend && npm start
+  ```
 
 ## Domain model: Library
 
@@ -19,6 +35,11 @@ What's cool here is that [servant-to-elm] does the job of generating types and d
 - An author can have zero to many books
 - Book title must be unique per author
 - Author's name must be unique
+
+### Other choices
+
+- New entries that are in relation are submitted together and inserted transactionally.
+- Search is case-insensitive
 
 ## Technical notes
 
