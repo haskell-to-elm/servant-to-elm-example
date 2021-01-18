@@ -35,11 +35,11 @@ runServer = do
 app :: Connection -> Application
 app conn =
   logStdoutDev
-    . cors (const $ Just policy) -- apply CORS things
-    . provideOptions libraryApi -- options are necessary for POST requests
+    . cors (const $ Just corsPolicy)
     $ serve libraryApi (server conn)
   where
-    policy = simpleCorsResourcePolicy {corsRequestHeaders = ["content-type"]} -- for POST requests, AFAIK
+    -- Content-Type header is necessary for POST requests
+    corsPolicy = simpleCorsResourcePolicy {corsRequestHeaders = ["content-type"]}
 
 libraryApi :: Proxy LibraryAPI
 libraryApi = Proxy
