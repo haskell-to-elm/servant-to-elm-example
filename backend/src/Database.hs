@@ -32,9 +32,8 @@ initDb :: Connection -> IO ()
 initDb conn = do
   putStrLn "Populationg Database with stub data ..."
   createTables
-  runExceptT $ traverse_ (uncurry insertAuthorAndBooks) stubBooks
-  (query_ conn "SELECT id, name FROM authors" :: IO [Author]) >>= print
-    >>= print
+  res <- runExceptT $ traverse_ (uncurry insertAuthorAndBooks) stubBooks
+  putStrLn $ either show (const "Done") res
   where
     createTables :: IO ()
     createTables = do
@@ -65,7 +64,7 @@ but also for seeding the database (which is IO) -}
 
 -- |
 -- Provides user-readable error about domain model constraints and other expected situations
-newtype UserReadableError = UserReadableError Text
+newtype UserReadableError = UserReadableError Text deriving (Eq, Show)
 
 -- |
 -- Returns id because it's useful for seeding the database
