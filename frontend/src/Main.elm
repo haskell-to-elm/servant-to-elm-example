@@ -2,9 +2,8 @@ module Main exposing (main)
 
 import Browser exposing (element)
 import Editor
-import Html exposing (Html, a, button, div, h1, img, input, p, span, text)
-import Html.Attributes exposing (class, href, placeholder, rel, src, target, type_, value)
-import Html.Events exposing (onClick, onInput)
+import Html exposing (Html, a, div, h1, p, text)
+import Html.Attributes exposing (class, href, target)
 import RemoteData
 import Search
 
@@ -48,7 +47,7 @@ However, in real apps routing should be implemented differently.
 update : Msg -> Model -> ( Model, Cmd Msg )
 update wrappedMsg wrappedModel =
     case ( wrappedMsg, wrappedModel ) of
-        -- Redirect to Editor page without additional actions
+        -- Redirect to the Editor page without additional actions
         ( SearchMsg Search.OpenEditorClicked, SearchPage model ) ->
             Editor.init
                 |> Tuple.mapBoth EditorPage (Cmd.map EditorMsg)
@@ -57,12 +56,12 @@ update wrappedMsg wrappedModel =
             Search.update msg model
                 |> Tuple.mapBoth SearchPage (Cmd.map SearchMsg)
 
-        -- Redirect to Search page without additional actions
+        -- Redirect to the Search page without additional actions
         ( EditorMsg Editor.CancelClicked, EditorPage model ) ->
             Search.init
                 |> Tuple.mapBoth SearchPage (Cmd.map SearchMsg)
 
-        -- Redirect to Search page and use the book title
+        -- Redirect to the Search page and use the book title
         ( EditorMsg (Editor.GotCreationResponse (RemoteData.Success newBookTitle)), EditorPage model ) ->
             update
                 (SearchMsg <| Search.QueryChanged newBookTitle)

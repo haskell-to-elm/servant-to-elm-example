@@ -5,13 +5,10 @@ import Api.Author exposing (Author)
 import Api.Book exposing (Book)
 import Api.Search exposing (UniversalSearchResults)
 import Helpers exposing (DetailedError)
-import Html exposing (Html, a, button, div, h1, img, input, p, pre, span, text)
-import Html.Attributes exposing (class, disabled, href, placeholder, rel, src, target, type_, value)
+import Html exposing (Html, button, div, img, input, p, text)
+import Html.Attributes exposing (class, placeholder, src, type_, value)
 import Html.Events exposing (onClick, onInput)
-import Http
-import Json.Decode as Decode exposing (Decoder, decodeString)
 import RemoteData exposing (RemoteData)
-import Task exposing (Task)
 
 
 type alias Model =

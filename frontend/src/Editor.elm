@@ -4,12 +4,10 @@ import Api.Api as Api
 import Api.Author exposing (Author, NewAuthor)
 import Api.Book exposing (NewBook, NewBookAuthor(..))
 import Helpers exposing (DetailedError)
-import Html exposing (Html, a, button, div, h1, input, label, p, span, text)
-import Html.Attributes exposing (class, disabled, for, href, id, placeholder, rel, target, type_, value)
+import Html exposing (Html, button, div, input, label, p, text)
+import Html.Attributes exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput)
-import Http
 import RemoteData exposing (RemoteData)
-import Task exposing (Task)
 
 
 type AuthorInput
