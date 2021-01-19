@@ -1,5 +1,5 @@
-{-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 -- |
 -- This module is responsible for dealing with the database
@@ -14,17 +14,6 @@ import Data.Text (Text)
 import Database.SQLite.Simple
 import DomainModel
 import StubData
-
-{- Instances for Database interaction -}
-instance FromRow Author where
-  fromRow = Author <$> field <*> field
-
-instance FromRow Book where
-  fromRow =
-    ( \bookId title imageUrl authorId authorName ->
-        Book bookId title imageUrl (Author authorId authorName)
-    )
-      <$> field <*> field <*> field <*> field <*> field
 
 -- |
 -- Create tables and populate them with demo data
@@ -51,7 +40,7 @@ initDb conn = do
         \ CONSTRAINT unique_book_title_per_author UNIQUE (title, author_id) \
         \ )"
 
-    insertAuthorAndBooks :: NewAuthor -> [NewBook] -> ExceptT UserReadableError IO ()
+    insertAuthorAndBooks :: NewAuthor -> [NewBook] -> ExceptT ApplicationError IO ()
     insertAuthorAndBooks newAuthor books = do
       authorId <- insertAuthor conn newAuthor
       traverse_ (insertBook conn) $
@@ -64,22 +53,26 @@ but also for seeding the database (which is IO) -}
 
 -- |
 -- Provides user-readable error about domain model constraints and other expected situations
-newtype UserReadableError = UserReadableError Text deriving (Eq, Show)
+data ApplicationError
+  = UserReadableError Text
+  | InternalError
+  deriving stock (Eq, Show)
 
 -- |
 -- Returns id because it's useful for seeding the database
 -- catches only specific kind of error, which are normal and expected
-insertAuthor :: Connection -> NewAuthor -> ExceptT UserReadableError IO Int64
-insertAuthor conn NewAuthor {name = name} =
+insertAuthor :: Connection -> NewAuthor -> ExceptT ApplicationError IO Int64
+insertAuthor conn NewAuthor {name} =
   withExceptT transformError . ExceptT . try $ do
     execute conn "INSERT INTO authors (name) VALUES (?)" (Only name)
     lastInsertRowId conn
   where
     transformError (SQLError ErrorConstraint "UNIQUE constraint failed: authors.name" _) =
       UserReadableError "Author with such name already exists. The author's name must be unique."
+    transformError _ = InternalError
 
-insertBook :: Connection -> NewBook -> ExceptT UserReadableError IO Int64
-insertBook conn NewBook {title = title, author = author, imageUrl = imageUrl} =
+insertBook :: Connection -> NewBook -> ExceptT ApplicationError IO Int64
+insertBook conn NewBook {title, author, imageUrl} =
   do
     begin
     authorId <-
@@ -115,31 +108,25 @@ toPattern :: Text -> Text
 toPattern t = "%" <> t <> "%"
 
 queryBooks :: Connection -> Maybe Text -> IO [Book]
-queryBooks conn (Just queryString) =
-  query
-    conn
-    "SELECT books.id, books.title, books.image_url, authors.id, authors.name \
-    \ FROM books \
-    \ JOIN authors \
-    \ ON books.author_id=authors.id \
-    \ WHERE books.title LIKE ? \
-    \ ORDER BY books.title"
-    (Only $ toPattern queryString)
--- in case of in-memory database omiting regex filter really won't improve anything,
--- but in filesystem-based dbs like Postges a different story.
-queryBooks conn Nothing =
-  query_
-    conn
-    "SELECT books.id, books.title, books.image_url, authors.id, authors.name \
-    \ FROM books \
-    \ JOIN authors \
-    \ ON books.author_id=authors.id \
-    \ ORDER BY books.title"
+queryBooks conn maybeQuery =
+  fmap fromSqlRow
+    <$> query
+      conn
+      "SELECT books.id, books.title, books.image_url, authors.id, authors.name \
+      \ FROM books \
+      \ JOIN authors \
+      \ ON books.author_id=authors.id \
+      \ WHERE books.title LIKE ? \
+      \ ORDER BY books.title"
+      (Only $ maybe "%" toPattern maybeQuery)
+  where
+    fromSqlRow (bookId, title, imageUrl, authorId, authorName) =
+      Book bookId title imageUrl (Author authorId authorName)
 
 queryAuthors :: Connection -> Maybe Text -> IO [Author]
-queryAuthors conn (Just queryString) =
-  query
-    conn
-    "SELECT id, name FROM authors WHERE name LIKE ? ORDER BY name"
-    (Only $ toPattern queryString)
-queryAuthors conn Nothing = query_ conn "SELECT authors.id, authors.name FROM authors"
+queryAuthors conn maybeQuery =
+  fmap (uncurry Author)
+    <$> query
+      conn
+      "SELECT id, name FROM authors WHERE name LIKE ? ORDER BY name"
+      (Only $ maybe "%" toPattern maybeQuery)

@@ -1,7 +1,6 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE UndecidableInstances #-}
@@ -14,7 +13,7 @@ import qualified Data.Aeson as Aeson
 import Data.Proxy
 import Data.String (fromString)
 import qualified Data.Text as T
-import GHC.Generics
+import GHC.Generics (Generic, Rep)
 import GHC.TypeLits (KnownSymbol, Symbol, symbolVal)
 import qualified Generics.SOP as SOP
 import qualified Language.Elm.Name as Name

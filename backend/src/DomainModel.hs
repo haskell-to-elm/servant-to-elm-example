@@ -2,7 +2,6 @@
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingVia #-}
-{-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE TypeApplications #-}
 
 -- |
@@ -39,7 +38,8 @@ data Book = Book
     imageUrl :: Text,
     author :: Author
   }
-  deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
+  deriving stock (Eq, Show, Read, Generic)
+  deriving anyclass (Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Book.Book" Book
 
 data NewBook = NewBook
@@ -47,31 +47,36 @@ data NewBook = NewBook
     author :: NewBookAuthor,
     imageUrl :: Text
   }
-  deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
+  deriving stock (Eq, Show, Read, Generic)
+  deriving anyclass (Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Book.NewBook" NewBook
 
 data NewBookAuthor
   = CreateNewAuthor NewAuthor
   | ExistingAuthorId Int
-  deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
+  deriving stock (Eq, Show, Read, Generic)
+  deriving anyclass (Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Book.NewBookAuthor" NewBookAuthor
 
 data Author = Author
   { authorId :: Int,
     name :: Text
   }
-  deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
+  deriving stock (Eq, Show, Read, Generic)
+  deriving anyclass (Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Author.Author" Author
 
 newtype NewAuthor = NewAuthor
   { name :: Text
   }
-  deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
+  deriving stock (Eq, Show, Read, Generic)
+  deriving anyclass (Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Author.NewAuthor" NewAuthor
 
 data UniversalSearchResults = UniversalSearchResults
   { authors :: [Author],
     books :: [Book]
   }
-  deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
+  deriving stock (Eq, Show, Read, Generic)
+  deriving anyclass (Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Search.UniversalSearchResults" UniversalSearchResults

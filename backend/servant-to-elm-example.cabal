@@ -30,7 +30,22 @@ common deps
     , wai-cors
     , wai-extra
     , warp
-  ghc-options: -Wall
+  default-extensions: 
+    NoMonomorphismRestriction
+    DuplicateRecordFields
+    OverloadedStrings
+  ghc-options:
+    -- Enable all possible warnings as errors
+    -Werror
+    -Weverything
+    -- Intentionally ignore some warnings
+    -Wno-all-missed-specialisations
+    -Wno-implicit-prelude
+    -Wno-missed-specialisations
+    -Wno-missing-export-lists
+    -Wno-missing-import-lists
+    -Wno-missing-local-signatures
+    -Wno-unsafe
   default-language:    Haskell2010    
 
 executable server

@@ -1,5 +1,4 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators #-}
 
 -- |
@@ -22,7 +21,7 @@ import Servant
 
 runServer :: IO ()
 runServer = do
-  let port = 8080
+  let port = (8080 :: Int)
   let dbfile = ":memory:"
 
   withConnection dbfile $ \conn -> do
@@ -68,6 +67,7 @@ server conn =
       case insertionResult of
         Right _ -> pure NoContent
         Left (UserReadableError e) -> throwError $ err400 {errBody = LTE.encodeUtf8 $ LT.fromStrict e}
+        Left InternalError -> throwError err500
 
     -- combined search for data of all types
     search :: Maybe Text -> Handler UniversalSearchResults
