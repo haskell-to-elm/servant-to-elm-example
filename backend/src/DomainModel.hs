@@ -10,7 +10,6 @@
 module DomainModel where
 
 import qualified Data.Aeson as Aeson
-import Data.Int
 import Data.Text (Text)
 import DerivingVia
 import GHC.Generics
@@ -31,10 +30,7 @@ typeDefinitions =
       jsonDefinitions @NewBookAuthor,
       jsonDefinitions @Author,
       jsonDefinitions @NewAuthor,
-      jsonDefinitions @CodegenExperiment,
-      jsonDefinitions @UniversalSearchResults,
-      -- , jsonDefinitions @Adt1 -- Error in elm decoder
-      jsonDefinitions @Adt2
+      jsonDefinitions @UniversalSearchResults
     ]
 
 data Book = Book
@@ -79,37 +75,3 @@ data UniversalSearchResults = UniversalSearchResults
   }
   deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
   deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.Search.UniversalSearchResults" UniversalSearchResults
-
-data CodegenExperiment = CodegenExperiment
-  { -- A custom sum-type
-    -- adt1 :: [Adt1],
-    adt2 :: [Adt2],
-    listOfMaybeMaybeInt :: [Maybe (Maybe Int)],
-    fieldMaybeMaybeInt1 :: Maybe (Maybe Int),
-    fieldMaybeMaybeInt2 :: Maybe (Maybe Int),
-    fieldMaybeMaybeInt3 :: Maybe (Maybe Int),
-    text :: Text,
-    string :: String,
-    int :: [Int],
-    -- int16 :: [Int16], -- No instance
-    -- int32 :: [Int32], -- No instance
-    -- int64 :: [Int64], -- No instance
-    -- integer :: [Integer], -- No instance
-    -- float :: [Float], -- No instance
-    double :: [Double]
-    -- unit :: () -- Error: no instance for HasElmType ()
-  }
-  deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
-  deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.CodegenExperiment.CodegenExperiment" CodegenExperiment
-
-data Adt1 -- Error in elm decoder, so not saved to .elm file
-  = Adt1A {field1 :: Int, field2 :: Text}
-  | Adt1B {field3 :: Bool}
-  deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
-  deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.CodegenExperiment.Adt1" Adt1
-
-data Adt2
-  = Adt2A Int Text
-  | Adt2B Bool
-  deriving (Eq, Show, Read, Generic, Aeson.ToJSON, Aeson.FromJSON, SOP.Generic, SOP.HasDatatypeInfo)
-  deriving (HasElmType, HasElmDecoder Aeson.Value, HasElmEncoder Aeson.Value) via ElmType "Api.CodegenExperiment.Adt2" Adt2

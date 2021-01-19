@@ -40,24 +40,3 @@ stubBooks =
       ]
     )
   ]
-
-codegenExperiment :: CodegenExperiment
-codegenExperiment =
-  CodegenExperiment
-    { -- adt1 = [Adt1A 42 "Hi", Adt1B True],
-      adt2 = [Adt2A 42 "Hi", Adt2B True],
-      listOfMaybeMaybeInt = [Nothing, Just Nothing, Just (Just 42)],
-      fieldMaybeMaybeInt1 = Nothing,
-      fieldMaybeMaybeInt2 = Just Nothing,
-      fieldMaybeMaybeInt3 = Just (Just 42),
-      text = "some Data.Text value",
-      string = "some String value",
-      int = [],
-      -- int16 = [],
-      -- int32 = [],
-      -- int64 = [],
-      -- integer = [],
-      -- float = [],
-      double = []
-      -- unit = ()
-    }
