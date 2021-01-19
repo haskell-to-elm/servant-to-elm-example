@@ -3,7 +3,6 @@ module Search exposing (Model, Msg(..), init, update, view)
 import Api.Api as Api
 import Api.Author exposing (Author)
 import Api.Book exposing (Book)
-import Api.CodegenExperiment exposing (CodegenExperiment)
 import Api.Search exposing (UniversalSearchResults)
 import Helpers exposing (DetailedError)
 import Html exposing (Html, a, button, div, h1, img, input, p, pre, span, text)
@@ -18,7 +17,6 @@ import Task exposing (Task)
 type alias Model =
     { query : String
     , searchResponse : RemoteData DetailedError UniversalSearchResults
-    , experimentResponse : RemoteData DetailedError CodegenExperiment
     }
 
 
@@ -26,9 +24,8 @@ init : ( Model, Cmd Msg )
 init =
     ( { query = ""
       , searchResponse = RemoteData.NotAsked
-      , experimentResponse = RemoteData.NotAsked
       }
-    , Api.getExperiment |> Cmd.map (RemoteData.fromResult >> GotExperimentResponse)
+    , Cmd.none
     )
 
 
@@ -36,7 +33,6 @@ type Msg
     = QueryChanged String
     | GotSearchResponse (RemoteData DetailedError UniversalSearchResults)
     | OpenEditorClicked
-    | GotExperimentResponse (RemoteData DetailedError CodegenExperiment)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -54,9 +50,6 @@ update msg model =
 
         GotSearchResponse res ->
             ( { model | searchResponse = res }, Cmd.none )
-
-        GotExperimentResponse res ->
-            ( { model | experimentResponse = res }, Cmd.none )
 
         OpenEditorClicked ->
             ( model, Cmd.none )
@@ -112,25 +105,6 @@ showSearchResponse data =
             showSearchResults results
 
 
-showExperimentResponse : RemoteData DetailedError CodegenExperiment -> Html Msg
-showExperimentResponse data =
-    case data of
-        RemoteData.NotAsked ->
-            div [] []
-
-        RemoteData.Loading ->
-            div [] [ p [ class "fade-in-slow" ] [ text ". . ." ] ]
-
-        RemoteData.Failure e ->
-            div [] [ p [ class "error fade-in" ] [ text (Helpers.showError e) ] ]
-
-        RemoteData.Success results ->
-            div []
-                [ p [] [ text "codegen experiment:" ]
-                , pre [ class "codegen-experiment-output" ] [ text <| Debug.toString results ]
-                ]
-
-
 view : Model -> Html Msg
 view model =
     div []
@@ -143,6 +117,4 @@ view model =
             ]
             []
         , showSearchResponse model.searchResponse
-
-        -- , showExperimentResponse model.experimentResponse -- experiment zone, uncomment to show
         ]
