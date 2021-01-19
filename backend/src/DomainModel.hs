@@ -18,7 +18,7 @@ import Language.Haskell.To.Elm
 
 -- |
 -- List of type definitions to be written to .elm files
--- Each new type from domain model should be added there,
+-- Each new type from the domain model should be added there,
 -- otherwise the root Elm module will fail to import some missing module,
 -- or will refer to the type which definition was not written to file:
 typeDefinitions :: [Definition]

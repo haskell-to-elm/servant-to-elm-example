@@ -47,9 +47,8 @@ initDb conn = do
         (\b -> b {author = ExistingAuthorId $ fromIntegral authorId} :: NewBook) <$> books
 
 {- Functions for querying the database.
-The reason for separating them is that they are used
-not only in the context of handling requests (which is Server),
-but also for seeding the database (which is IO) -}
+The reason for separating them from the Server is that they are used
+not only for handling requests but also for seeding the database -}
 
 -- |
 -- Provides user-readable error about domain model constraints and other expected situations
@@ -59,8 +58,8 @@ data ApplicationError
   deriving stock (Eq, Show)
 
 -- |
--- Returns id because it's useful for seeding the database
--- catches only specific kind of error, which are normal and expected
+-- Returns an id because it's useful for seeding the database.
+-- Catches only specific kind of error, which are normal and expected
 insertAuthor :: Connection -> NewAuthor -> ExceptT ApplicationError IO Int64
 insertAuthor conn NewAuthor {name} =
   withExceptT transformError . ExceptT . try $ do
@@ -86,11 +85,11 @@ insertBook conn NewBook {title, author, imageUrl} =
     commit
     pure bookId
     -- Errors lead to rollback.
-    -- So, an Author will be written only if a Book can be written.
+    -- Therefore, an Author will be written only if a Book can be written.
     -- This can happen, for example, if we put one more uniqueness constraint on the books table
     `catchError` (\e -> rollback >> throwError e)
   where
-    -- "Exclusive" transaction provides highest isolation level in SQLite.
+    -- "Exclusive" transaction provides the highest isolation level in SQLite.
     begin = lift $ execute_ conn "BEGIN EXCLUSIVE TRANSACTION"
     commit = lift $ execute_ conn "COMMIT TRANSACTION"
     rollback = lift $ execute_ conn "ROLLBACK TRANSACTION"
@@ -103,7 +102,8 @@ insertBook conn NewBook {title, author, imageUrl} =
 -- |
 -- SQL has special syntax for regular expressions
 -- % before and after means that the substring can appear anywhere in the text
--- (which is not an ideal approach when causes database not to use index - because a starting substring can be anything)
+-- (which is not an ideal approach when causes the database not to use index,
+-- because a starting substring can be anything)
 toPattern :: Text -> Text
 toPattern t = "%" <> t <> "%"
 
