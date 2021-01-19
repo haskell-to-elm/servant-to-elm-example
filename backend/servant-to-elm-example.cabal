@@ -14,28 +14,22 @@ build-type:          Simple
 common deps
   build-depends:
       base >= 4.7 && < 5
-    , bytestring
-    , text
-    , servant-server
-    , servant
-    , servant-to-elm 
     , aeson
-    , wai
-    , wai, extra
-    , warp
-    , http-types
-    , elm-syntax
-    , haskell-to-elm
-    , servant-multipart
-    , generics-sop
-    , unordered-containers
-    , prettyprinter
-    , filepath
     , directory
+    , elm-syntax
+    , filepath
+    , generics-sop
+    , haskell-to-elm
+    , mtl
+    , prettyprinter
+    , servant-server
+    , servant-to-elm 
+    , sqlite-simple
+    , text
+    , unordered-containers
     , wai-cors
     , wai-extra
-    , sqlite-simple
-    , mtl
+    , warp
   ghc-options: -Wall
   default-language:    Haskell2010    
 
