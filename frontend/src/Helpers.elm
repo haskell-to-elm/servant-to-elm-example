@@ -10,21 +10,15 @@ type alias DetailedError =
     ( Http.Error, Maybe { metadata : Http.Metadata, body : String } )
 
 
-{-| This is how generated Elm response looks like
--}
-type alias GeneratedResult a =
-    Result DetailedError a
-
-
 {-| Show readable error message
 -}
 showError : DetailedError -> String
 showError ( err, response ) =
     case ( err, response ) of
-        ( _, Just { body } ) ->
+        ( Http.BadStatus _, Just { body } ) ->
             body
 
-        ( Http.NetworkError, x ) ->
+        ( Http.NetworkError, _ ) ->
             "Network Error"
 
         ( Http.BadUrl _, _ ) ->
