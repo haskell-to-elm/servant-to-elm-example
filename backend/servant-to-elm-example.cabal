@@ -30,6 +30,7 @@ common deps
     , wai-cors
     , wai-extra
     , warp
+    , process
   default-extensions: 
     NoMonomorphismRestriction
     DuplicateRecordFields
