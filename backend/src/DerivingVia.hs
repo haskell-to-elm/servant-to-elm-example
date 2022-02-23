@@ -6,14 +6,14 @@
 -- This module is a Special Boilerplate to define ElmType and reduce boilerplate
 module DerivingVia where
 
-import qualified Data.Aeson as Aeson
+import Data.Aeson qualified as Aeson
 import Data.Proxy
 import Data.String (fromString)
-import qualified Data.Text as T
+import Data.Text qualified as T
 import GHC.Generics (Generic, Rep)
 import GHC.TypeLits (KnownSymbol, Symbol, symbolVal)
-import qualified Generics.SOP as SOP
-import qualified Language.Elm.Name as Name
+import Generics.SOP qualified as SOP
+import Language.Elm.Name qualified as Name
 import Language.Haskell.To.Elm
 
 newtype ElmType (name :: Symbol) a

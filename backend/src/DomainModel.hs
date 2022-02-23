@@ -2,11 +2,11 @@
 -- Types representing the domain model
 module DomainModel where
 
-import qualified Data.Aeson as Aeson
+import Data.Aeson qualified as Aeson
 import Data.Text (Text)
 import DerivingVia
 import GHC.Generics
-import qualified Generics.SOP as SOP
+import Generics.SOP qualified as SOP
 import Language.Elm.Definition (Definition)
 import Language.Haskell.To.Elm
 

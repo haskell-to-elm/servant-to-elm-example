@@ -6,8 +6,8 @@ module Server where
 import Control.Monad.Except (runExceptT)
 import Control.Monad.IO.Class
 import Data.Text (Text)
-import qualified Data.Text.Lazy as LT
-import qualified Data.Text.Lazy.Encoding as LTE
+import Data.Text.Lazy qualified as LT
+import Data.Text.Lazy.Encoding qualified as LTE
 import Database
 import Database.SQLite.Simple
 import DomainModel
