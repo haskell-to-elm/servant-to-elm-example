@@ -1,7 +1,6 @@
 module Helpers exposing (..)
 
 import Http
-import RemoteData exposing (RemoteData(..))
 
 
 {-| Error and possibly response body

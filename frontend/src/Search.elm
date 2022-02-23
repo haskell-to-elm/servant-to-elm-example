@@ -75,6 +75,7 @@ showBook { title, author, imageUrl } =
 showSearchResults : UniversalSearchResults -> Html Msg
 showSearchResults { authors, books } =
     let
+        items : List (Html Msg)
         items =
             List.map showAuthor authors ++ List.map showBook books
     in

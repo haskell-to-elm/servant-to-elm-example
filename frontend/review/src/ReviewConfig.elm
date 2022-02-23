@@ -11,6 +11,8 @@ when inside the directory containing this file.
 
 -}
 
+-- import NoRecursiveUpdate
+
 import NoDebug.Log
 import NoDebug.TodoOrToString
 import NoImportingEverything
@@ -18,7 +20,6 @@ import NoMissingSubscriptionsCall
 import NoMissingTypeAnnotation
 import NoMissingTypeAnnotationInLetIn
 import NoPrematureLetComputation
-import NoRecursiveUpdate
 import NoSimpleLetBody
 import NoUnsafeDivision
 import NoUnused.CustomTypeConstructorArgs
@@ -40,7 +41,8 @@ config =
     , NoDebug.TodoOrToString.rule
     , Simplify.rule Simplify.defaults
     , NoMissingSubscriptionsCall.rule
-    , NoRecursiveUpdate.rule
+
+    -- , NoRecursiveUpdate.rule
     , NoUselessSubscriptions.rule
     , NoUnsafeDivision.rule
     , NoUnused.CustomTypeConstructors.rule []
@@ -51,10 +53,10 @@ config =
     , NoUnused.Parameters.rule
     , NoUnused.Patterns.rule
     , NoUnused.Variables.rule
-    , NoImportingEverything.rule [ "Html" , "Html.Attributes"]
+    , NoImportingEverything.rule [ "Html", "Html.Attributes" ]
     , NoMissingTypeAnnotation.rule
     , NoMissingTypeAnnotationInLetIn.rule
     , NoPrematureLetComputation.rule
     , NoSimpleLetBody.rule
     ]
-        
+        |> List.map (Rule.ignoreErrorsForDirectories [ "src/Api/" ])

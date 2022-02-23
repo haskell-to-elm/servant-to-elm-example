@@ -48,7 +48,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update wrappedMsg wrappedModel =
     case ( wrappedMsg, wrappedModel ) of
         -- Redirect to the Editor page without additional actions
-        ( SearchMsg Search.OpenEditorClicked, SearchPage model ) ->
+        ( SearchMsg Search.OpenEditorClicked, SearchPage _ ) ->
             Editor.init
                 |> Tuple.mapBoth EditorPage (Cmd.map EditorMsg)
 
@@ -57,12 +57,12 @@ update wrappedMsg wrappedModel =
                 |> Tuple.mapBoth SearchPage (Cmd.map SearchMsg)
 
         -- Redirect to the Search page without additional actions
-        ( EditorMsg Editor.CancelClicked, EditorPage model ) ->
+        ( EditorMsg Editor.CancelClicked, EditorPage _ ) ->
             Search.init
                 |> Tuple.mapBoth SearchPage (Cmd.map SearchMsg)
 
         -- Redirect to the Search page and use the book title
-        ( EditorMsg (Editor.GotCreationResponse (RemoteData.Success newBookTitle)), EditorPage model ) ->
+        ( EditorMsg (Editor.GotCreationResponse (RemoteData.Success newBookTitle)), EditorPage _ ) ->
             update
                 (SearchMsg <| Search.QueryChanged newBookTitle)
                 (SearchPage <| Tuple.first Search.init)

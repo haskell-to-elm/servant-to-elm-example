@@ -53,6 +53,7 @@ type Msg
 submitBook : AuthorInput -> String -> String -> Cmd Msg
 submitBook authorInput bookTitle bookCover =
     let
+        author : NewBookAuthor
         author =
             case authorInput of
                 ExistingAuthor authorData ->
@@ -233,9 +234,11 @@ showCreateBookResponse data =
 view : Model -> Html Msg
 view ({ authorInput, createBookResponse, bookTitle, bookImage } as model) =
     let
+        isSubmitting : Bool
         isSubmitting =
             createBookResponse == RemoteData.Loading
 
+        isValidBookInput : Bool
         isValidBookInput =
             case authorInput of
                 NewAuthorByName authorName _ ->
@@ -244,6 +247,7 @@ view ({ authorInput, createBookResponse, bookTitle, bookImage } as model) =
                 ExistingAuthor _ ->
                     String.trim bookTitle /= ""
 
+        buttonText : String
         buttonText =
             case model.authorInput of
                 NewAuthorByName _ _ ->
