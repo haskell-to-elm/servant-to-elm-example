@@ -42,7 +42,9 @@ libraryApi = Proxy
 -- Instead, it is shaped to match the usage scenarios.
 type LibraryAPI =
   "books" :> QueryParam "query" Text :> Get '[JSON] [Book]
-    -- TODO: Missing instance of HasElmType: can't just use PostCreated (which is Verb 'POST 201)
+    -- Note: "Missing instance of HasElmType", we can't just use PostCreated (which is Verb 'POST 201)
+    -- Probably we could specify the missing instance ourselves,
+    -- but it's not really important to follow the REST style.
     :<|> "book" :> ReqBody '[JSON] NewBook :> PostNoContent
     :<|> "authors" :> QueryParam "query" Text :> Get '[JSON] [Author]
     :<|> "search" :> QueryParam "query" Text :> Get '[JSON] UniversalSearchResults
