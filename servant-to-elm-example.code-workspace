@@ -1,15 +1,17 @@
 {
   "folders": [
     {
+      "path": ".",
+      "name": "root"
+    },
+    {
+      "name": "backend",
       "path": "backend"
     },
     {
+      "name": "frontend",
       "path": "frontend"
-    },
-    // {
-    //   "path": ".",
-    //   "name": "root"
-    // }
+    }
   ],
   "settings": {
     "[elm]": {
@@ -17,9 +19,28 @@
     },
     "[haskell]": {
       "editor.formatOnSave": true
-    }
+    },
+    "[markdown]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "elmLS.elmReviewDiagnostics": "warning"
   },
   "extensions": {
-    "recommendations": ["haskell.haskell", "sjurmillidahl.ormolu-vscode", "elmtooling.elm-ls-vscode"]
+    "recommendations": [
+      "haskell.haskell",
+      "sjurmillidahl.ormolu-vscode",
+      "elmtooling.elm-ls-vscode",
+      "esbenp.prettier-vscode",
+      "shd101wyy.markdown-preview-enhanced"
+    ]
   }
 }
