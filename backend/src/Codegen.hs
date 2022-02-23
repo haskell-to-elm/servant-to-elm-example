@@ -1,6 +1,3 @@
-{-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE TypeApplications #-}
-
 -- |
 -- This module is responsible for generating Elm files, but not for defining types
 module Codegen where

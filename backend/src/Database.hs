@@ -1,6 +1,3 @@
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE NamedFieldPuns #-}
-
 -- |
 -- This module is responsible for dealing with the database
 module Database where

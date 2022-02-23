@@ -4,74 +4,12 @@
 # For advanced use and comprehensive documentation of the format, please see:
 # https://docs.haskellstack.org/en/stable/yaml_configuration/
 
-# Resolver to choose a 'specific' stackage snapshot or a compiler version.
-# A snapshot resolver dictates the compiler version and the set of packages
-# to be used for project dependencies. For example:
-#
-# resolver: lts-3.5
-# resolver: nightly-2015-09-21
-# resolver: ghc-7.10.2
-#
-# The location of a snapshot can be provided as a file or url. Stack assumes
-# a snapshot provided as a file might change, whereas a url resource does not.
-#
-# resolver: ./custom-snapshot.yaml
-# resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver:
-  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/16/27.yaml
+resolver: lts-18.26
 
-# User packages to be built.
-# Various formats can be used as shown in the example below.
-#
-# packages:
-# - some-directory
-# - https://example.com/foo/bar/baz-0.0.2.tar.gz
-#   subdirs:
-#   - auto-update
-#   - wai
 packages:
 - .
-# Dependency packages to be pulled from upstream that are not in the resolver.
-# These entries can reference officially published versions as well as
-# forks / in-progress versions pinned to a git hash. For example:
-#
-# extra-deps:
-# - acme-missiles-0.3
-# - git: https://github.com/commercialhaskell/stack.git
-#   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
-#
+
 extra-deps:
-  # - servant-to-elm-0.4.1.0@sha256:89a28455449a7b4ee57f85ee5422ad87cd0e2a72fb9b7b9bd0a554639f29566b,3042
-  - git: https://github.com/folq/servant-to-elm.git
-    commit: 56448e6779c010b9a7e61e94ad506bc473efd05b
-  - elm-syntax-0.3.0.0@sha256:8fd57f8e15e499c11b78983bce3c4b237eb2f22e467a55d51702b43a18c61323,2257
-  # - haskell-to-elm-0.3.0.0@sha256:b8a016087523596c7420fc0b78611b2ffa9b8094c8c5930b89ef7bbec82401a5,3614
-  - git: https://github.com/folq/haskell-to-elm.git
-    commit: 57faee3020b52b80e3a528e9b84e73d923e23501
-  - servant-multipart-0.12@sha256:aa81dd0478270ade4a21b75611d5bc9cce8107df2e89c37b9964a3421629825d,2761
-  - servant-options-0.1.0.0@sha256:39f50166a68006250e79370372f553ca476f14d06d93fa0c401050253aeba803,914
-  - sqlite-simple-0.4.18.0@sha256:3ceea56375c0a3590c814e411a4eb86943f8d31b93b110ca159c90689b6b39e5,3002
-  - direct-sqlite-2.3.26@sha256:04e835402f1508abca383182023e4e2b9b86297b8533afbd4e57d1a5652e0c23,3718
-# Override default flag values for local packages and extra-deps
-# flags: {}
-
-# Extra package databases containing global packages
-# extra-package-dbs: []
-
-# Control whether we use the GHC we find on the path
-# system-ghc: true
-#
-# Require a specific version of stack, using version ranges
-# require-stack-version: -any # Default
-# require-stack-version: ">=2.5"
-#
-# Override the architecture used by stack, especially useful on Windows
-# arch: i386
-# arch: x86_64
-#
-# Extra directories used by stack for building
-# extra-include-dirs: [/path/to/dir]
-# extra-lib-dirs: [/path/to/dir]
-#
-# Allow a newer minor version of GHC than the snapshot specifies
-# compiler-check: newer-minor
+  - servant-to-elm-0.4.3.0
+  - elm-syntax-0.3.0.0
+  - haskell-to-elm-0.3.2.0

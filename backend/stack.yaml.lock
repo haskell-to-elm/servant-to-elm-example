@@ -5,66 +5,29 @@
 
 packages:
 - completed:
-    name: servant-to-elm
-    version: 0.4.1.0
-    git: https://github.com/folq/servant-to-elm.git
+    hackage: servant-to-elm-0.4.3.0@sha256:b773875fa64c85aa2d810f53a40de37d632ac9ea549d93ad8450ffcb39b8e5ec,3268
     pantry-tree:
-      size: 811
-      sha256: c9122de76a56ae613aed88f819b6ffde6fdf66238209fcad41113809348fea00
-    commit: 56448e6779c010b9a7e61e94ad506bc473efd05b
+      size: 501
+      sha256: 5e81f1b95c0d1fd8274444dc8816632fd9c0ad45709500f1a461bbb5fbad3b3e
   original:
-    git: https://github.com/folq/servant-to-elm.git
-    commit: 56448e6779c010b9a7e61e94ad506bc473efd05b
+    hackage: servant-to-elm-0.4.3.0
 - completed:
     hackage: elm-syntax-0.3.0.0@sha256:8fd57f8e15e499c11b78983bce3c4b237eb2f22e467a55d51702b43a18c61323,2257
     pantry-tree:
       size: 788
       sha256: 47dc847d2d26cf6fd3abfff8e8e254f56bfcb0c606c350709bf3d4acfd05cff4
   original:
-    hackage: elm-syntax-0.3.0.0@sha256:8fd57f8e15e499c11b78983bce3c4b237eb2f22e467a55d51702b43a18c61323,2257
+    hackage: elm-syntax-0.3.0.0
 - completed:
-    name: haskell-to-elm
-    version: 0.3.1.0
-    git: https://github.com/folq/haskell-to-elm.git
+    hackage: haskell-to-elm-0.3.2.0@sha256:02085cf6ac5c1c696c1dc923033b5f01509fcbed67c32cc79139704888821e60,4441
     pantry-tree:
-      size: 853
-      sha256: 64809c056019fbe4ffa203329ca83425ba2336c99075fbeecf013eb928fd215e
-    commit: 57faee3020b52b80e3a528e9b84e73d923e23501
+      size: 650
+      sha256: 118740f5a865608a00049a271f2a84af8ae1957f02c013967a2d363b1a80c800
   original:
-    git: https://github.com/folq/haskell-to-elm.git
-    commit: 57faee3020b52b80e3a528e9b84e73d923e23501
-- completed:
-    hackage: servant-multipart-0.12@sha256:aa81dd0478270ade4a21b75611d5bc9cce8107df2e89c37b9964a3421629825d,2761
-    pantry-tree:
-      size: 386
-      sha256: 51c4e9e8be3ee80689bb6df46aee484a4f434dbeb33f4379ed8d1741fe4631cd
-  original:
-    hackage: servant-multipart-0.12@sha256:aa81dd0478270ade4a21b75611d5bc9cce8107df2e89c37b9964a3421629825d,2761
-- completed:
-    hackage: servant-options-0.1.0.0@sha256:39f50166a68006250e79370372f553ca476f14d06d93fa0c401050253aeba803,914
-    pantry-tree:
-      size: 293
-      sha256: 7812baf1b27c62068ba634207fbd7077b886424d666b36739a78c6d4008a1fd4
-  original:
-    hackage: servant-options-0.1.0.0@sha256:39f50166a68006250e79370372f553ca476f14d06d93fa0c401050253aeba803,914
-- completed:
-    hackage: sqlite-simple-0.4.18.0@sha256:3ceea56375c0a3590c814e411a4eb86943f8d31b93b110ca159c90689b6b39e5,3002
-    pantry-tree:
-      size: 1930
-      sha256: e58b9955e483d51ee0966f8ba4384305d871480e2a38b32ee0fcd4573d74cf95
-  original:
-    hackage: sqlite-simple-0.4.18.0@sha256:3ceea56375c0a3590c814e411a4eb86943f8d31b93b110ca159c90689b6b39e5,3002
-- completed:
-    hackage: direct-sqlite-2.3.26@sha256:04e835402f1508abca383182023e4e2b9b86297b8533afbd4e57d1a5652e0c23,3718
-    pantry-tree:
-      size: 770
-      sha256: 11874ab21e10c5b54cd1e02a037b677dc1e2ee9986f38c599612c56654dc01c3
-  original:
-    hackage: direct-sqlite-2.3.26@sha256:04e835402f1508abca383182023e4e2b9b86297b8533afbd4e57d1a5652e0c23,3718
+    hackage: haskell-to-elm-0.3.2.0
 snapshots:
 - completed:
-    size: 533252
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/16/27.yaml
-    sha256: c2aaae52beeacf6a5727c1010f50e89d03869abfab6d2c2658ade9da8ed50c73
-  original:
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/16/27.yaml
+    size: 590102
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/26.yaml
+    sha256: e76d109964d9335abb412e22139c5bce3078be290ac6d90b8ecea6cc009bb198
+  original: lts-18.26

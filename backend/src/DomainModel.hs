@@ -1,9 +1,3 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE DerivingVia #-}
-{-# LANGUAGE TypeApplications #-}
-
 -- |
 -- Types representing the domain model
 module DomainModel where

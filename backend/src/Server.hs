@@ -1,6 +1,3 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeOperators #-}
-
 -- |
 -- This module is responsible for defining server API type (the entire API surface)
 -- and functions that run the server
@@ -46,7 +43,7 @@ libraryApi = Proxy
 type LibraryAPI =
   "books" :> QueryParam "query" Text :> Get '[JSON] [Book]
     -- TODO: Missing instance of HasElmType: can't just use PostCreated (which is Verb 'POST 201)
-    :<|> "book" :> ReqBody '[JSON] NewBook :> PostNoContent '[JSON] NoContent
+    :<|> "book" :> ReqBody '[JSON] NewBook :> PostNoContent
     :<|> "authors" :> QueryParam "query" Text :> Get '[JSON] [Author]
     :<|> "search" :> QueryParam "query" Text :> Get '[JSON] UniversalSearchResults
 
