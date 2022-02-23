@@ -4,18 +4,18 @@ module Codegen where
 
 import Control.Monad
 import Data.Foldable
-import qualified Data.HashMap.Lazy as HashMap
+import Data.HashMap.Lazy qualified as HashMap
 import Data.Maybe (fromMaybe)
 import Data.Text (Text)
-import qualified Data.Text as T
-import qualified Data.Text.IO as TIO
-import Data.Text.Prettyprint.Doc (Doc)
-import Data.Text.Prettyprint.Doc.Render.Text (hPutDoc)
+import Data.Text qualified as T
+import Data.Text.IO qualified as TIO
 import DomainModel
 import Language.Elm.Definition (Definition)
 import Language.Elm.Name (Module)
-import qualified Language.Elm.Pretty as Pretty
-import qualified Language.Elm.Simplification as Simplification
+import Language.Elm.Pretty qualified as Pretty
+import Language.Elm.Simplification qualified as Simplification
+import Prettyprinter (Doc)
+import Prettyprinter.Render.Text (hPutDoc)
 import Servant.To.Elm
 import Server
 import System.Directory (createDirectoryIfMissing, doesDirectoryExist, findExecutable, removeDirectoryRecursive)
