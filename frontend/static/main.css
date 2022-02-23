@@ -170,7 +170,9 @@ button:disabled {
   height: 67px;
   object-fit: cover; /* prevent covers from distorting */
   border-radius: 2px;
-  background-color: var(--main-color-10); /* visible in case of invalid urls or during loading */
+  background-color: var(
+    --main-color-10
+  ); /* visible in case of invalid urls or during loading */
 }
 
 .book__title {
