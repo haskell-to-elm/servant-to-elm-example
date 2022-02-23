@@ -4,11 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "elm-live src/Main.elm --dir=static --open --port=8000 --pushstate --start-page index.html -- --output=static/bundle.js"
+    "start": "elm-live src/Main.elm --dir=static --open --port=8000 --pushstate --start-page index.html -- --output=static/bundle.js",
+    "format-fix-all": "elm-format --yes .",
+    "format-validate": "elm-format --validate .",
+    "review": "elm-review",
+    "review-fix-interactive": "elm-review --fix",
+    "review-fix-all": "yes | elm-review --fix-all"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "elm-live": "^4.0.2"
+  "devDependencies": {
+    "elm-live": "^4.0.2",
+    "elm-format": "^0.8.5",
+    "elm-review": "^2.7.0"
   }
 }
