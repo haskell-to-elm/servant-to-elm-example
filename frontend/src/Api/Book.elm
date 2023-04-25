@@ -1,4 +1,14 @@
-module Api.Book exposing (..)
+module Api.Book exposing
+    ( Book
+    , NewBook
+    , NewBookAuthor(..)
+    , bookDecoder
+    , bookEncoder
+    , newBookAuthorDecoder
+    , newBookAuthorEncoder
+    , newBookDecoder
+    , newBookEncoder
+    )
 
 import Api.Author
 import Json.Decode

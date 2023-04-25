@@ -1,4 +1,9 @@
-module Api.Api exposing (..)
+module Api.Api exposing
+    ( getAuthors
+    , getBooks
+    , getSearch
+    , postBook
+    )
 
 import Api.Author
 import Api.Book

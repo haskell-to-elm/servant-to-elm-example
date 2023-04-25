@@ -1,4 +1,8 @@
-module Api.Search exposing (..)
+module Api.Search exposing
+    ( UniversalSearchResults
+    , universalSearchResultsDecoder
+    , universalSearchResultsEncoder
+    )
 
 import Api.Author
 import Api.Book

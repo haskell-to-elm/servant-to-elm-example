@@ -1,4 +1,11 @@
-module Api.Author exposing (..)
+module Api.Author exposing
+    ( Author
+    , NewAuthor
+    , authorDecoder
+    , authorEncoder
+    , newAuthorDecoder
+    , newAuthorEncoder
+    )
 
 import Json.Decode
 import Json.Decode.Pipeline
