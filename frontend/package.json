@@ -5,17 +5,20 @@
   "main": "index.js",
   "scripts": {
     "start": "elm-live src/Main.elm --dir=static --open --port=8000 --pushstate --start-page index.html -- --output=static/bundle.js",
+    "typecheck": "elm make src/Main.elm --output=static/bundle.js --optimize",
     "format-fix-all": "elm-format --yes .",
     "format-validate": "elm-format --validate .",
     "review": "elm-review",
     "review-fix-interactive": "elm-review --fix",
-    "review-fix-all": "yes | elm-review --fix-all"
+    "review-fix-all": "yes | elm-review --fix-all",
+    "precommit": "npm run typecheck && npm run format-validate && npm run review",
+    "precommit-fix": "npm run typecheck && npm run format-fix-all && npm run review-fix-all"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "elm-format": "^0.8.7",
     "elm-live": "^4.0.2",
-    "elm-format": "^0.8.5",
-    "elm-review": "^2.7.0"
+    "elm-review": "^2.10.1"
   }
 }

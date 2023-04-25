@@ -37,7 +37,6 @@
   "extensions": {
     "recommendations": [
       "haskell.haskell",
-      "sjurmillidahl.ormolu-vscode",
       "elmtooling.elm-ls-vscode",
       "esbenp.prettier-vscode",
       "shd101wyy.markdown-preview-enhanced"
