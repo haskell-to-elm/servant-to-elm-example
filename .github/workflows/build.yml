@@ -80,5 +80,15 @@ jobs:
       - name: Frontend Run code review
         run: cd frontend && npm run review
 
-      # - name: Run tests
+      # - name: Frontend Run tests
       #   run: npm run test
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v2
