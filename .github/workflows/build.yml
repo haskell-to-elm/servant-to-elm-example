@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-  # pull_request:
-  #   types:
-  #     - opened
-  #     # "synchronize" means new commits pushed to the HEAD of the pull request branch
-  #     - synchronize
+  pull_request:
+    types:
+      - opened
+      # "synchronize" means new commits pushed to the HEAD of the pull request branch
+      - synchronize
 
 env:
   REGISTRY: ghcr.io
