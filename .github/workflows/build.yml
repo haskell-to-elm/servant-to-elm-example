@@ -39,15 +39,11 @@ jobs:
 
       - name: Set up NODE
         uses: actions/setup-node@v3
+        # Note: set up node early for caching elm-format
         with:
           node-version: 18.16
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
-
-      - name: Setup Elm
-        uses: jorelali/setup-elm@v5
-        with:
-          elm-version: 0.19.1
 
       - name: Backend Build and test
         uses: freckle/stack-action@v4
@@ -67,6 +63,11 @@ jobs:
 
       - name: Codegen
         run: ${{ steps.stack.outputs.local-bin-path }}/codegen
+
+      - name: Setup Elm
+        uses: jorelali/setup-elm@v5
+        with:
+          elm-version: 0.19.1
 
       - name: Frontend Install dependencies
         run: cd frontend && npm i
@@ -102,5 +103,22 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # - name: Prepare tags and labels (server)
+      #   id: meta-server
+      #   uses: docker/metadata-action@v4
+      #   with:
+      #     images: ${{ env.REGISTRY }}/vv90/contest-viewer-server
+      #     tags: ${{ env.TAGS }}
+
+      # - name: Build and push Docker image (server)
+      #   uses: docker/build-push-action@v3
+      #   with: 
+      #     context: server
+      #     file: server/Dockerfile
+      #     build-contexts: bin_path_context=/home/runner/.local/bin
+      #     push: true
+      #     tags: ${{ steps.meta-server.outputs.tags}}
+      #     labels: ${{ steps.meta-server.outputs.labels}}
