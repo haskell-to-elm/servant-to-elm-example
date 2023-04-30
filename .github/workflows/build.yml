@@ -29,15 +29,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.16
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Setup elm
+      - name: Install elm-format (for codegen)
+        run: npm install -g elm-format
+
+      - name: Setup Elm
         uses: jorelali/setup-elm@v5
         with:
           elm-version: 0.19.1
-
-      - run: npm install -g elm-format
 
       - uses: freckle/stack-action@v4
         with:
@@ -54,7 +55,7 @@ jobs:
           echo "du -csh backend"
           echo "du -csh ${{ steps.stack.outputs.local-bin-path }}/server"
 
-      - name: Setup tooling
+      - name: Install frontend dependencies
         run: cd frontend && npm i
 
       - name: Get files changed after api client codegen
@@ -70,13 +71,4 @@ jobs:
           exit 1
 
       - name: Validate format
-        run: cd frontend && npm run format-validate
-
-      - name: Typecheck
-        run: cd frontend && npm run typecheck
-
-      - name: Run code review
-        run: cd frontend && npm run review
-
-      # - name: Run tests
-      #   run: npm run test
+        run: cd frontend && npm precommit
