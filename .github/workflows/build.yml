@@ -106,12 +106,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # - name: Prepare tags and labels (server)
-      #   id: meta-server
-      #   uses: docker/metadata-action@v4
-      #   with:
-      #     images: ${{ env.REGISTRY }}/vv90/contest-viewer-server
-      #     tags: ${{ env.TAGS }}
+      - name: Prepare tags and labels (backend)
+        id: meta-backend
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/VladimirLogachev/servant-to-elm-example-backend
+          tags: ${{ env.TAGS }}
 
       # - name: Build and push Docker image (server)
       #   uses: docker/build-push-action@v3
