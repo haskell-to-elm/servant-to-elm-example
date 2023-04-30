@@ -26,7 +26,23 @@ jobs:
         working-directory: frontend
 
     steps:
+      - run: npm install -g elm-format
+
       - uses: actions/checkout@v3
+
+      - uses: freckle/stack-action@v4
+        with:
+          working-directory: backend
+          # Note: Slow optimized builds only on `main`, fast builds on other branches
+          fast: ${{ github.ref != 'refs/heads/main' }}
+          pedantic: true
+          test: true
+          cache-prefix: lts-20.18
+          stack-arguments: --copy-bins
+
+      - run: |
+          echo "du -csh backend"
+          echo "du -csh ${{ steps.stack.outputs.local-bin-path }}/server"
 
       - name: Setup elm
         uses: jorelali/setup-elm@v3
