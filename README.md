@@ -1,5 +1,7 @@
 # servant-to-elm-example
 
+![example workflow](https://github.com/vladimirlogachev/servant-to-elm-example/actions/workflows/build.yml/badge.svg)
+
 <img src="screenshot.png" alt="servant-to-elm-example" width="500"/>
 
 This example is a full-stack web application, built in a typesafe functional way.

@@ -1,4 +1,4 @@
-name: Frontend - compile, check, codegen, build, push
+name: Build
 
 on:
   push:
