@@ -51,7 +51,7 @@ jobs:
           cache-prefix: lts-20.18
           stack-arguments: --copy-bins
 
-      - run: ${{ steps.stack.outputs.local-bin-path }}/codegen
+      - run: "${{ steps.stack.outputs.local-bin-path }}/codegen"
 
       - name: Install frontend dependencies
         run: cd frontend && npm i
