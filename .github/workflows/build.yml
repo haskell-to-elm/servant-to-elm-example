@@ -32,15 +32,13 @@ jobs:
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install elm-format (for codegen)
-        run: npm install -g elm-format
-
       - name: Setup Elm
         uses: jorelali/setup-elm@v5
         with:
           elm-version: 0.19.1
 
-      - uses: freckle/stack-action@v4
+      - name: Backend Build and test
+        uses: freckle/stack-action@v4
         id: stack
         with:
           working-directory: backend
@@ -52,10 +50,13 @@ jobs:
           cache-prefix: lts-20.18
           stack-arguments: --copy-bins
 
-      - run: |
-          ${{ steps.stack.outputs.local-bin-path }}/codegen
+      - name: Install elm-format (for codegen)
+        run: npm install -g elm-format
 
-      - name: Install frontend dependencies
+      - name: Codegen
+        run: ${{ steps.stack.outputs.local-bin-path }}/codegen
+
+      - name: Frontend Install dependencies
         run: cd frontend && npm i
 
       - name: Get files changed after api client codegen
@@ -70,13 +71,13 @@ jobs:
           echo "Http Api client code is not up-to-date. Did you forget to run `stack run codegen`?"
           exit 1
 
-      - name: Typecheck
+      - name: Frontend Typecheck
         run: cd frontend && npm run typecheck
 
-      - name: Validate format
+      - name: Frontend Validate format
         run: cd frontend && npm run format-validate
 
-      - name: Run code review
+      - name: Frontend Run code review
         run: cd frontend && npm run review
 
       # - name: Run tests
