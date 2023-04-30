@@ -41,9 +41,9 @@ jobs:
 
   build-frontend:
     runs-on: ubuntu-22.04
-    defaults:
-      run:
-        working-directory: frontend
+    # defaults:
+    #   run:
+    #     working-directory: frontend
 
     steps:
       - run: npm install -g elm-format
@@ -56,7 +56,7 @@ jobs:
           elm-version: 0.19.1
 
       - name: Setup tooling
-        run: npm i
+        run: cd frontend && npm i
 
       - name: Get files changed after api client codegen
         id: changed-api-client-files
@@ -71,13 +71,13 @@ jobs:
           exit 1
 
       - name: Validate format
-        run: npm run format-validate
+        run: cd frontend && npm run format-validate
 
       - name: Typecheck
-        run: npm run typecheck
+        run: cd frontend && npm run typecheck
 
       - name: Run code review
-        run: npm run review
+        run: cd frontend && npm run review
 
       # - name: Run tests
       #   run: npm run test
