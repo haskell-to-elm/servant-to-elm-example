@@ -42,7 +42,7 @@ jobs:
       - uses: freckle/stack-action@v4
         with:
           working-directory: backend
-          # Note: Slow optimized builds only on `main`, fast builds on other branches
+          # Note: Slow optimized builds only on `main`, but fast builds on other branches
           fast: ${{ github.ref != 'refs/heads/main' }}
           # Temporarily disabled
           pedantic: false
