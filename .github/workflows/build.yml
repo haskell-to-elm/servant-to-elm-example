@@ -10,7 +10,7 @@ on:
   #     # "synchronize" means new commits pushed to the HEAD of the pull request branch
   #     - synchronize
 
-permissions: read-all
+# permissions: read-all
 
 env:
   REGISTRY: ghcr.io
