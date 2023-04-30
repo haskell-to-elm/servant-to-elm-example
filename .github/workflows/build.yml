@@ -25,13 +25,25 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set up NODE
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.16
+
+      - name: Setup elm
+        uses: jorelali/setup-elm@v5
+        with:
+          elm-version: 0.19.1
+
+      - run: npm install -g elm-format
+
       - uses: freckle/stack-action@v4
         with:
           working-directory: backend
           # Note: Slow optimized builds only on `main`, fast builds on other branches
           fast: ${{ github.ref != 'refs/heads/main' }}
           # Temporarily disabled
-          pedantic: false 
+          pedantic: false
           test: true
           cache-prefix: lts-20.18
           stack-arguments: --copy-bins
@@ -39,22 +51,6 @@ jobs:
       - run: |
           echo "du -csh backend"
           echo "du -csh ${{ steps.stack.outputs.local-bin-path }}/server"
-
-  build-frontend:
-    runs-on: ubuntu-22.04
-    # defaults:
-    #   run:
-    #     working-directory: frontend
-
-    steps:
-      - run: npm install -g elm-format
-
-      - uses: actions/checkout@v3
-
-      - name: Setup elm
-        uses: jorelali/setup-elm@v5
-        with:
-          elm-version: 0.19.1
 
       - name: Setup tooling
         run: cd frontend && npm i
