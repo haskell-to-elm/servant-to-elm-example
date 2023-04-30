@@ -13,11 +13,11 @@ cp index.src.html build/
 mv ./build/assets/bundle.js ./build/bundle.uncompressed.js
 
 # Compress Elm bundle
-npm run uglifyjs -- "./build/bundle.uncompressed.js" \
+npm run --silent uglifyjs -- "./build/bundle.uncompressed.js" \
   --compress 'pure_funcs="F2,F3,F4,F5,F6,F7,F8,F9,A2,A3,A4,A5,A6,A7,A8,A9",pure_getters,keep_fargs=false,unsafe_comps,unsafe' \
   --output="./build/bundle.compressed1.js"
 
-npm run uglifyjs -- "./build/bundle.compressed1.js" \
+npm run --silent uglifyjs -- "./build/bundle.compressed1.js" \
   --mangle \
   --output="./build/assets/bundle.js"
 
@@ -32,7 +32,7 @@ sed -E "s@\"/build/assets/bundle.js\"@\"/build/assets/bundle_${build_hash}.js\"@
 mv build/index.tmp.html build/index.src.html
 
 # Inline all inlineable assets
-npm run inline-source -- --compress false --root ./build build/index.src.html > build/index.html
+npm run --silent inline-source -- --compress false --root ./build build/index.src.html > build/index.html
 
 # Remove just inlined assets
 rm -rf build/assets/inline
