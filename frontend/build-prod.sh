@@ -1,3 +1,7 @@
+# The goal of this script is to produce a build in the `build` directory
+# Which contenents should be equal to the html root directory of the web server
+# So that the end user could put it in the nginx or wherever else without additional customization
+
 # exit when any command fails
 set -e
 
@@ -6,8 +10,8 @@ npm run build
 rm -rf build
 mkdir build
 
+cp -r assets-root/ build/
 cp -r assets build/
-cp -r assets-root build/
 cp index.src.html build/
 
 mv ./build/assets/bundle.js ./build/bundle.uncompressed.js
@@ -32,7 +36,7 @@ sed -E "s@\"/build/assets/bundle.js\"@\"/build/assets/bundle_${build_hash}.js\"@
 mv build/index.tmp.html build/index.src.html
 
 # Inline all inlineable assets
-npm run --silent inline-source -- --compress false --root ./build build/index.src.html > build/index.html
+npm run --silent inline-source -- --compress false --root ./build build/index.src.html >build/index.html
 
 # Remove just inlined assets
 rm -rf build/assets/inline
