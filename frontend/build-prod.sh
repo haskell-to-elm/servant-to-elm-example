@@ -32,11 +32,11 @@ build_hash=$(sha1sum ./build/assets/bundle.js | awk '{print $1}')
 mv ./build/assets/bundle.js ./build/assets/bundle_${build_hash}.js
 
 # Substitute hash in the html file
-sed -E "s@\"/build/assets/bundle.js\"@\"/build/assets/bundle_${build_hash}.js\"@" build/index.src.html >build/index.tmp.html
+sed -E "s@\"/assets/bundle.js\"@\"/assets/bundle_${build_hash}.js\"@" build/index.src.html >build/index.tmp.html
 mv build/index.tmp.html build/index.src.html
 
 # Inline all inlineable assets
-npm run --silent inline-source -- --compress false --root ./build build/index.src.html >build/index.html
+npm run --silent inline-source -- --compress false --root ./build ./build/index.src.html >./build/index.html
 
 # Remove just inlined assets
 rm -rf build/assets/inline
