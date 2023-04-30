@@ -21,13 +21,8 @@ jobs:
 
   build:
     runs-on: ubuntu-22.04
-    defaults:
-      run:
-        working-directory: frontend
 
     steps:
-      - run: npm install -g elm-format
-
       - uses: actions/checkout@v3
 
       - uses: freckle/stack-action@v4
@@ -43,6 +38,17 @@ jobs:
       - run: |
           echo "du -csh backend"
           echo "du -csh ${{ steps.stack.outputs.local-bin-path }}/server"
+
+  build-frontend:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - run: npm install -g elm-format
+
+      - uses: actions/checkout@v3
 
       - name: Setup elm
         uses: jorelali/setup-elm@v3
