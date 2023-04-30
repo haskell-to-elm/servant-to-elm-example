@@ -1,0 +1,61 @@
+name: Frontend - compile, check, codegen, build, push
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      # "synchronize" means new commits pushed to the HEAD of the pull request branch
+      - synchronize
+
+permissions: read-all
+
+jobs:
+  cancel-previous:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.11.0
+
+  build:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup elm
+        uses: jorelali/setup-elm@v3
+        with:
+          elm-version: 0.19.1
+
+      - name: Setup tooling
+        run: npm i
+
+      - name: Get files changed after api client codegen
+        id: changed-api-client-files
+        uses: tj-actions/changed-files@v35
+        with:
+          files: frontend/src/Api/**
+
+      - name: Fail if api client code is not up-to-date
+        if: steps.changed-api-client-files.outputs.any_changed == 'true'
+        run: |
+          echo "Http Api client code is not up-to-date. Did you forget to run `stack run codegen`?"
+          exit 1
+
+      - name: Validate format
+        run: npm run format-validate
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Run code review
+        run: npm run review
+
+      # - name: Run tests
+      #   run: npm run test
