@@ -113,12 +113,14 @@ jobs:
           images: ${{ env.REGISTRY }}/VladimirLogachev/servant-to-elm-example-backend
           tags: ${{ env.TAGS }}
 
-      # - name: Build and push Docker image (server)
-      #   uses: docker/build-push-action@v3
-      #   with: 
-      #     context: server
-      #     file: server/Dockerfile
-      #     build-contexts: bin_path_context=/home/runner/.local/bin
-      #     push: true
-      #     tags: ${{ steps.meta-server.outputs.tags}}
-      #     labels: ${{ steps.meta-server.outputs.labels}}
+      - name: Build and push Docker image (server)
+        uses: docker/build-push-action@v4
+        with: 
+          context: backend
+          file: backend/Dockerfile
+          build-contexts: bin_path_context=${{ steps.stack.outputs.local-bin-path }}
+          push: true
+          tags: ${{ steps.meta-backend.outputs.tags}}
+          labels: ${{ steps.meta-backend.outputs.labels}}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
