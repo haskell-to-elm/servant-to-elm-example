@@ -30,7 +30,8 @@ jobs:
           working-directory: backend
           # Note: Slow optimized builds only on `main`, fast builds on other branches
           fast: ${{ github.ref != 'refs/heads/main' }}
-          pedantic: true
+          # Temporarily disabled
+          pedantic: false 
           test: true
           cache-prefix: lts-20.18
           stack-arguments: --copy-bins

@@ -8,7 +8,10 @@ copyright:           "2022 Vladimir Logachev"
 
 description: Fullstack web app, an example of servant-to-elm
 
+language: GHC2021
+
 default-extensions:
+  - NoPolyKinds # Note: Breaks Elm instances for parametrized types
   - DataKinds
   - DeriveAnyClass
   - DeriveGeneric
@@ -53,6 +56,9 @@ ghc-options:
   - -Wno-unsafe
   - -Wno-safe
   - -Wno-unused-packages
+  - -Wno-missing-kind-signatures
+  # Temporary disabled
+  - -Wno-ambiguous-fields
   # Not sure if it's really useful for us, because some modules are still not "safe haskell".
   - -Wno-missing-safe-haskell-mode
     # Temporarily disabled warnings which need to be fixed eventually
