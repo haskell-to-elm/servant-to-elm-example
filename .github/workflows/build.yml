@@ -70,5 +70,14 @@ jobs:
           echo "Http Api client code is not up-to-date. Did you forget to run `stack run codegen`?"
           exit 1
 
+      - name: Typecheck
+        run: cd frontend && npm run typecheck
+
       - name: Validate format
-        run: cd frontend && npm precommit
+        run: cd frontend && npm run format-validate
+
+      - name: Run code review
+        run: cd frontend && npm run review
+
+      # - name: Run tests
+      #   run: npm run test
