@@ -5,20 +5,28 @@
   "main": "index.js",
   "scripts": {
     "start": "elm-live src/Main.elm --dir=./ --host=0.0.0.0 --port=8080 --pushstate --start-page=index.src.html -- --output=./assets/bundle.js",
-    "typecheck": "elm make src/Main.elm --output=./assets/bundle.js --optimize",
+    "build": "elm make src/Main.elm --output=./assets/bundle.js --optimize",
+    "typecheck": "npm run build",
+    "test-watch": "elm-test \"src/**/*Test.elm\" --watch",
+    "test": "elm-test \"src/**/*Test.elm\"",
     "format-fix-all": "elm-format --yes .",
     "format-validate": "elm-format --validate .",
     "review": "elm-review",
     "review-fix-interactive": "elm-review --fix",
     "review-fix-all": "yes | elm-review --fix-all",
-    "precommit": "npm run typecheck && npm run format-validate && npm run review",
-    "precommit-fix": "npm run typecheck && npm run format-fix-all && npm run review-fix-all"
+    "precommit": "npm run typecheck && npm run format-validate && npm test && npm run review",
+    "precommit-fix": "npm run typecheck && npm run format-fix-all && npm test && npm run review-fix-all",
+    "uglifyjs": "uglifyjs",
+    "inline-source": "inline-source"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "elm-format": "^0.8.7",
     "elm-live": "^4.0.2",
-    "elm-review": "^2.10.1"
+    "elm-review": "^2.10.1",
+    "elm-test": "^0.19.1-revision12",
+    "inline-source-cli": "^2.0.0",
+    "uglify-js": "^3.9.4"
   }
 }

@@ -70,17 +70,15 @@ jobs:
       - name: Frontend Install dependencies
         run: cd frontend && npm i
 
-      - name: Frontend Typecheck
-        run: cd frontend && npm run typecheck
+      - name: Frontend Check
+        run: |
+          cd frontend
+          npm run precommit
 
-      - name: Frontend Validate format
-        run: cd frontend && npm run format-validate
-
-      - name: Frontend Run code review
-        run: cd frontend && npm run review
-
-      # - name: Frontend Run tests
-      #   run: npm run test
+      - name: Frontend build
+        run: |
+          cd frontend
+          bash build-prod.sh
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2
