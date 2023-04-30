@@ -12,6 +12,18 @@ on:
 
 permissions: read-all
 
+env:
+  REGISTRY: ghcr.io
+  # What tags does:
+  # - always tag with sha
+  # - always tag with branch name
+  # - if a release tag is 'v1.0.0', then tag 'latest' and '1.0.0'
+  # More info: https://github.com/docker/metadata-action#tags-input
+  TAGS: |
+    type=sha
+    type=ref,event=branch
+    type=semver,pattern={{major}}.{{minor}}.{{patch}}
+
 jobs:
   cancel-previous:
     runs-on: ubuntu-22.04
