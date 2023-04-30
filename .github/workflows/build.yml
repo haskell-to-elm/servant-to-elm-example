@@ -10,7 +10,6 @@ on:
   #     # "synchronize" means new commits pushed to the HEAD of the pull request branch
   #     - synchronize
 
-
 env:
   REGISTRY: ghcr.io
   # What tags does:
@@ -100,14 +99,32 @@ jobs:
           images: ${{ env.REGISTRY }}/VladimirLogachev/servant-to-elm-example-backend
           tags: ${{ env.TAGS }}
 
-      - name: Build and push Docker image (server)
+      - name: Build and push Docker image (backend)
         uses: docker/build-push-action@v4
-        with: 
+        with:
           context: backend
           file: backend/Dockerfile
           build-contexts: bin_path_context=${{ steps.stack.outputs.local-bin-path }}
           push: true
           tags: ${{ steps.meta-backend.outputs.tags}}
           labels: ${{ steps.meta-backend.outputs.labels}}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Prepare tags and labels (frontend)
+        id: meta-frontend
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/VladimirLogachev/servant-to-elm-example-frontend
+          tags: ${{ env.TAGS }}
+
+      - name: Build and push Docker image (frontend)
+        uses: docker/build-push-action@v4
+        with:
+          context: frontend
+          file: frontend/Dockerfile
+          push: true
+          tags: ${{ steps.meta-frontend.outputs.tags }}
+          labels: ${{ steps.meta-frontend.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
