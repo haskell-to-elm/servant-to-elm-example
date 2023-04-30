@@ -81,7 +81,7 @@ jobs:
       - name: Fail if api client code is not up-to-date
         if: steps.changed-api-client-files.outputs.any_changed == 'true'
         run: |
-          echo "Http Api client code is not up-to-date. Did you forget to run `stack run codegen`?"
+          echo "Http Api client code is not up-to-date. Did you forget to run codegen?"
           exit 1
 
       - name: Frontend Typecheck

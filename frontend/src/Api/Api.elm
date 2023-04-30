@@ -33,7 +33,7 @@ getBooks a =
         , headers = []
         , url =
             Url.Builder.crossOrigin Config.urlBase
-                [ "books2" ]
+                [ "books" ]
                 (Maybe.withDefault []
                     (Maybe.map
                         (List.singleton
