@@ -1,11 +1,13 @@
 {
   "name": "frontend",
-  "version": "1.0.0",
+  "author": "",
   "description": "",
-  "main": "index.js",
+  "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
-    "start": "elm-live src/Main.elm --dir=./ --host=0.0.0.0 --port=8080 --pushstate --start-page=index.src.html -- --output=./assets/bundle.js",
-    "build": "elm make src/Main.elm --output=./assets/bundle.js --optimize",
+    "start": "vite",
+    "build": "vite build",
+    "preview-build": "vite preview",
     "typecheck": "npm run build",
     "test-watch": "elm-test \"src/**/*Test.elm\" --watch",
     "test": "elm-test \"src/**/*Test.elm\"",
@@ -15,18 +17,16 @@
     "review-fix-interactive": "elm-review --fix",
     "review-fix-all": "yes | elm-review --fix-all",
     "precommit": "npm run typecheck && npm run format-validate && npm test && npm run review",
-    "precommit-fix": "npm run typecheck && npm run format-fix-all && npm test && npm run review-fix-all",
-    "uglifyjs": "uglifyjs",
-    "inline-source": "inline-source"
+    "precommit-fix": "npm run typecheck && npm run format-fix-all && npm test && npm run review-fix-all"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "elm-format": "^0.8.7",
-    "elm-live": "^4.0.2",
     "elm-review": "^2.10.1",
     "elm-test": "^0.19.1-revision12",
-    "inline-source-cli": "^2.0.0",
-    "uglify-js": "^3.9.4"
+    "vite": "^4.3.0",
+    "vite-plugin-elm": "^2.8.0-beta.3"
+  },
+  "dependencies": {
+    "elm-debug-transformer": "^1.1.2"
   }
 }
