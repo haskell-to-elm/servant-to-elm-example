@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "elm-live src/Main.elm --dir=static --open --port=8000 --pushstate --start-page index.html -- --output=static/bundle.js",
+    "start": "elm-live src/Main.elm --dir=static --port=8080 --pushstate --start-page index.html -- --output=static/bundle.js",
     "typecheck": "elm make src/Main.elm --output=static/bundle.js --optimize",
     "format-fix-all": "elm-format --yes .",
     "format-validate": "elm-format --validate .",

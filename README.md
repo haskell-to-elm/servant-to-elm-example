@@ -17,20 +17,22 @@ What's cool here is that [servant-to-elm] does the job of generating types and d
   ```sh
   cd frontend && npm i
   ```
+
 ### Set up editor (optional)
 
 - If you are using VSCode and you want to open both frontend and backend as a single workspace, use `File > Open Workspace` and choose `servant-to-elm-example.code-workspace`. In this scenario, VSCode will work correctly with both languages simultaneously. Also, the editor may recommend extensions, and installing them is a wise choice.
 
 ## Run
 
-- Start the server on port 8080:
+- Start the server on port 8000:
   ```sh
   cd backend && stack run server
   ```
-- Run frontend in dev mode ([localhost:8000](http://localhost:8000) opens in browser automatically):
+- Run frontend in dev mode
   ```sh
   cd frontend && npm start
   ```
+- Open http://localhost:8080
 
 ## Domain model: Library
 

@@ -19,10 +19,15 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( { query = ""
-      , searchResponse = RemoteData.NotAsked
+    let
+        initialQuery : String
+        initialQuery =
+            "ha"
+    in
+    ( { query = initialQuery
+      , searchResponse = RemoteData.Loading
       }
-    , Cmd.none
+    , Api.getSearch (Just initialQuery) |> Cmd.map (RemoteData.fromResult >> GotSearchResponse)
     )
 
 

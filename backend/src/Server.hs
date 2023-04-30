@@ -18,7 +18,7 @@ import Servant
 
 runServer :: IO ()
 runServer = do
-  let port = (8080 :: Int)
+  let port = (8000 :: Int)
   let dbfile = ":memory:"
 
   withConnection dbfile $ \conn -> do
