@@ -53,7 +53,7 @@ jobs:
 
       - run: |
           cd backend
-          cp ${{ steps.stack.outputs.local-bin-path }}/codegen ./codegen
+          cp -r ${{ steps.stack.outputs.local-bin-path }} .
           ./codegen
 
       - name: Install frontend dependencies
