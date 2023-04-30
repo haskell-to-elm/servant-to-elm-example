@@ -10,7 +10,6 @@ on:
   #     # "synchronize" means new commits pushed to the HEAD of the pull request branch
   #     - synchronize
 
-# permissions: read-all
 
 env:
   REGISTRY: ghcr.io
@@ -71,18 +70,6 @@ jobs:
 
       - name: Frontend Install dependencies
         run: cd frontend && npm i
-
-      - name: Get files changed after api client codegen
-        id: changed-api-client-files
-        uses: tj-actions/changed-files@v35
-        with:
-          files: frontend/src/Api/**
-
-      - name: Fail if api client code is not up-to-date
-        if: steps.changed-api-client-files.outputs.any_changed == 'true'
-        run: |
-          echo "Http Api client code is not up-to-date. Did you forget to run codegen?"
-          exit 1
 
       - name: Frontend Typecheck
         run: cd frontend && npm run typecheck

@@ -1,0 +1,30 @@
+version: '3.8'
+
+networks:
+  localNetwork:
+    name: servant-to-elm-example-local
+
+services:
+  backend:
+    image: ghcr.io/vladimirlogachev/servant-to-elm-example-backend:main
+    # This clarification of platform is necessary for Apple Silicon chips.
+    platform: linux/amd64
+    restart: always
+    environment:
+      - LANG=C.UTF-8
+    ports:
+      - '8000:8000'
+
+  # frontend:
+  #   image: ghcr.io/vladimirlogachev/servant-to-elm-example-frontend:main
+  #   # This clarification of platform is necessary for Apple Silicon chips.
+  #   platform: linux/amd64
+  #   restart: always
+  #   depends_on:
+  #     - backend
+  #   ports:
+  #     - '8080:8080'
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       tag: "{{.ImageName}}|{{.Name}}"
