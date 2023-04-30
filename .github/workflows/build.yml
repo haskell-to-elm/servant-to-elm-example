@@ -41,6 +41,7 @@ jobs:
           elm-version: 0.19.1
 
       - uses: freckle/stack-action@v4
+        id: stack
         with:
           working-directory: backend
           # Note: Slow optimized builds only on `main`, but fast builds on other branches
@@ -52,9 +53,7 @@ jobs:
           stack-arguments: --copy-bins
 
       - run: |
-          cd backend
-          cp -r ${{ steps.stack.outputs.local-bin-path }} .
-          ./codegen
+          ${{ steps.stack.outputs.local-bin-path }}/codegen
 
       - name: Install frontend dependencies
         run: cd frontend && npm i
