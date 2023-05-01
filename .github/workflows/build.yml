@@ -70,10 +70,14 @@ jobs:
       - name: Frontend Install dependencies
         run: cd frontend && npm i
 
-      - name: Frontend Check
-        run: |
-          cd frontend
-          npm run precommit
+      - name: Frontend Validate Formatting
+        run: cd frontend && npm run format-validate
+
+      - name: Frontend Test
+        run: cd frontend && npm test
+
+      - name: Frontend Review
+        run: cd frontend && npm run review
 
       - name: Frontend build
         run: |
