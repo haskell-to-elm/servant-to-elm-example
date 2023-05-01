@@ -15,7 +15,7 @@ What's cool here is that [servant-to-elm] does the job of generating types and d
   ```sh
   cd backend && stack run codegen
   ```
-- Install frontend dependencies (it's only `elm-live`)
+- Install frontend dependencies
   ```sh
   cd frontend && npm i
   ```
