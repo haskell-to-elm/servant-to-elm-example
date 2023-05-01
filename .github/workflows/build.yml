@@ -110,9 +110,8 @@ jobs:
       - name: Build and push Docker image (backend)
         uses: docker/build-push-action@v4
         with:
-          context: backend
+          context: ${{ steps.stack.outputs.local-bin-path }}
           file: backend/Dockerfile
-          build-contexts: bin_path_context=${{ steps.stack.outputs.local-bin-path }}
           push: true
           tags: ${{ steps.meta-backend.outputs.tags}}
           labels: ${{ steps.meta-backend.outputs.labels}}
