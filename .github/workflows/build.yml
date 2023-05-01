@@ -59,7 +59,7 @@ jobs:
         with:
           ghc-version: ${{ steps.stack.outputs.compiler-version }}
 
-      - uses: haskell/actions/hlint-setup@v1
+      - uses: haskell/actions/hlint-setup@v2
 
       - uses: haskell/actions/hlint-run@v2
 
