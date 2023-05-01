@@ -55,6 +55,14 @@ jobs:
           cache-prefix: lts-20.18
           stack-arguments: --copy-bins
 
+      - uses: freckle/weeder-action@v2
+        with:
+          ghc-version: ${{ steps.stack.outputs.compiler-version }}
+
+      - uses: haskell/actions/hlint-setup@v1
+
+      - uses: haskell/actions/hlint-run@v2
+
       - name: Install elm-format (for codegen)
         run: npm install -g elm-format
 
