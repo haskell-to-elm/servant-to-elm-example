@@ -86,10 +86,6 @@ jobs:
         working-directory: frontend
         run: npm run build
 
-  docker-things:
-    needs: build
-    runs-on: ubuntu-22.04
-    steps:
       - name: Log in to the Container registry
         uses: docker/login-action@v2
         with:
@@ -110,8 +106,9 @@ jobs:
       - name: Build and push Docker image (backend)
         uses: docker/build-push-action@v4
         with:
-          context: ${{ steps.stack.outputs.local-bin-path }}
+          context: backend
           file: backend/Dockerfile
+          build-contexts: bin_path_context=${{ steps.stack.outputs.local-bin-path }}
           push: true
           tags: ${{ steps.meta-backend.outputs.tags}}
           labels: ${{ steps.meta-backend.outputs.labels}}
