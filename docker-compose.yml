@@ -10,8 +10,6 @@ services:
     # This clarification of platform is necessary for Apple Silicon chips.
     platform: linux/amd64
     restart: always
-    environment:
-      - LANG=C.UTF-8
     ports:
       - '8000:8000'
 
