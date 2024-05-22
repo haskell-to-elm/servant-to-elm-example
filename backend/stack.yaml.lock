@@ -12,22 +12,26 @@ packages:
   original:
     hackage: servant-to-elm-0.4.3.0
 - completed:
-    hackage: elm-syntax-0.3.2.0@sha256:08b3eb8b0573c2667fde3869c333b302c793381b47b40de635075a6eee1264b1,2257
+    hackage: elm-syntax-0.3.3.0@sha256:4a03c1778c38b9c924e7e9aca07de294ec675bafa9d9184e91a574c50a3ca40c,2312
     pantry-tree:
-      sha256: 49cf1e844575293f10590c434cb957f3b754f209d3593a44a1012b58749139a6
+      sha256: f200504f5ef03e631aba9417ae01491cfda6a35cf69da0685c815c16736c3d5d
       size: 788
   original:
-    hackage: elm-syntax-0.3.2.0
+    hackage: elm-syntax-0.3.3.0
 - completed:
-    hackage: haskell-to-elm-0.3.2.0@sha256:02085cf6ac5c1c696c1dc923033b5f01509fcbed67c32cc79139704888821e60,4441
+    commit: 52ab086a320a14051aa38d0353d957fb6b2525e9
+    git: https://github.com/haskell-to-elm/haskell-to-elm.git
+    name: haskell-to-elm
     pantry-tree:
-      sha256: 118740f5a865608a00049a271f2a84af8ae1957f02c013967a2d363b1a80c800
-      size: 650
+      sha256: a2b0585554cfe30cd6bf1b4068f11bc432e32267d87624a1a3eeefb67235d68e
+      size: 818
+    version: 0.3.2.0
   original:
-    hackage: haskell-to-elm-0.3.2.0
+    commit: 52ab086a320a14051aa38d0353d957fb6b2525e9
+    git: https://github.com/haskell-to-elm/haskell-to-elm.git
 snapshots:
 - completed:
-    sha256: 9fa4bece7acfac1fc7930c5d6e24606004b09e80aa0e52e9f68b148201008db9
-    size: 649606
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/20/18.yaml
-  original: lts-20.18
+    sha256: 4a0e5e187fbef423f9c60072bfb1dd56f2a01a07a2667eb1469bd79073cfceaf
+    size: 713340
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/22/20.yaml
+  original: lts-22.20

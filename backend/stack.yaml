@@ -7,14 +7,21 @@ ghc-options:
   # HIE files for weeder
   "$locals": -fwrite-ide-info
 
-resolver: lts-20.18
+resolver: lts-22.20
 
 packages:
-- .
+  - .
 
 extra-deps:
   - servant-to-elm-0.4.3.0
-  - elm-syntax-0.3.2.0
-  - haskell-to-elm-0.3.2.0
-  
+  - elm-syntax-0.3.3.0
+  # Note: A more moder version of haskell-to-elm hasn't been uploaded to Hackage yet.
+  - git: https://github.com/haskell-to-elm/haskell-to-elm.git
+    commit: 52ab086a320a14051aa38d0353d957fb6b2525e9 # "Merge pull request #26 from rickowens/lts-upgrade"
+
+# Downsides of `allow-newer: true`:
+# Warning: Ignoring servant-to-elm's bounds on servant (>=0.17 && <0.19) and using servant-0.20.1.
+#          Reason: allow-newer enabled.
+# Warning: Ignoring servant-to-elm's bounds on elm-syntax (>=0.3.0 && <0.3.1) and using elm-syntax-0.3.3.0.
+#          Reason: allow-newer enabled.
 allow-newer: true
