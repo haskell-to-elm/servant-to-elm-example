@@ -1,16 +1,16 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.1.
+-- This file has been generated from package.yaml by hpack version 0.36.0.
 --
 -- see: https://github.com/sol/hpack
 
 name:           backend
 version:        0.1.0.0
 description:    Fullstack web app, an example of servant-to-elm
-homepage:       https://github.com/VladimirLogachev/servant-to-elm-example#readme
-bug-reports:    https://github.com/VladimirLogachev/servant-to-elm-example/issues
+homepage:       https://github.com/haskell-to-elm/servant-to-elm-example#readme
+bug-reports:    https://github.com/haskell-to-elm/servant-to-elm-example/issues
 author:         Vladimir Logachev
-maintainer:     logachev.dev@ya.ru
+maintainer:     vladimir@logachev.dev
 copyright:      2022 Vladimir Logachev
 license:        BSD3
 license-file:   LICENSE
@@ -18,7 +18,7 @@ build-type:     Simple
 
 source-repository head
   type: git
-  location: https://github.com/VladimirLogachev/servant-to-elm-example
+  location: https://github.com/haskell-to-elm/servant-to-elm-example
 
 library
   exposed-modules:
@@ -36,24 +36,13 @@ library
       NoPolyKinds
       DataKinds
       DeriveAnyClass
-      DeriveGeneric
       DerivingStrategies
       DerivingVia
       DuplicateRecordFields
-      FlexibleContexts
-      FlexibleInstances
-      ImportQualifiedPost
       LambdaCase
-      MultiParamTypeClasses
-      NamedFieldPuns
-      RankNTypes
-      NoMonomorphismRestriction
+      OverloadedRecordDot
       OverloadedStrings
-      RankNTypes
-      TupleSections
-      TypeApplications
-      TypeOperators
-  ghc-options: -j8 +RTS -A32m -RTS -O2 -haddock -Weverything -Wno-all-missed-specialisations -Wno-missed-specialisations -Wno-missing-local-signatures -Wno-implicit-prelude -Wno-missing-export-lists -Wno-unsafe -Wno-safe -Wno-unused-packages -Wno-missing-kind-signatures -Wno-ambiguous-fields -Wno-missing-safe-haskell-mode -Wno-missing-import-lists -Wno-prepositive-qualified-module
+  ghc-options: -j8 +RTS -A32m -RTS -O2 -haddock -Weverything -Wno-implicit-prelude -Wno-all-missed-specialisations -Wno-missed-specialisations -Wno-missing-local-signatures -Wno-missing-export-lists -Wno-unsafe -Wno-unused-packages -Wno-missing-kind-signatures -Wno-missing-safe-haskell-mode -Wno-missing-import-lists
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -85,24 +74,13 @@ executable codegen
       NoPolyKinds
       DataKinds
       DeriveAnyClass
-      DeriveGeneric
       DerivingStrategies
       DerivingVia
       DuplicateRecordFields
-      FlexibleContexts
-      FlexibleInstances
-      ImportQualifiedPost
       LambdaCase
-      MultiParamTypeClasses
-      NamedFieldPuns
-      RankNTypes
-      NoMonomorphismRestriction
+      OverloadedRecordDot
       OverloadedStrings
-      RankNTypes
-      TupleSections
-      TypeApplications
-      TypeOperators
-  ghc-options: -j8 +RTS -A32m -RTS -O2 -haddock -Weverything -Wno-all-missed-specialisations -Wno-missed-specialisations -Wno-missing-local-signatures -Wno-implicit-prelude -Wno-missing-export-lists -Wno-unsafe -Wno-safe -Wno-unused-packages -Wno-missing-kind-signatures -Wno-ambiguous-fields -Wno-missing-safe-haskell-mode -Wno-missing-import-lists -Wno-prepositive-qualified-module -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -j8 +RTS -A32m -RTS -O2 -haddock -Weverything -Wno-implicit-prelude -Wno-all-missed-specialisations -Wno-missed-specialisations -Wno-missing-local-signatures -Wno-missing-export-lists -Wno-unsafe -Wno-unused-packages -Wno-missing-kind-signatures -Wno-missing-safe-haskell-mode -Wno-missing-import-lists -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , backend
@@ -135,24 +113,13 @@ executable server
       NoPolyKinds
       DataKinds
       DeriveAnyClass
-      DeriveGeneric
       DerivingStrategies
       DerivingVia
       DuplicateRecordFields
-      FlexibleContexts
-      FlexibleInstances
-      ImportQualifiedPost
       LambdaCase
-      MultiParamTypeClasses
-      NamedFieldPuns
-      RankNTypes
-      NoMonomorphismRestriction
+      OverloadedRecordDot
       OverloadedStrings
-      RankNTypes
-      TupleSections
-      TypeApplications
-      TypeOperators
-  ghc-options: -j8 +RTS -A32m -RTS -O2 -haddock -Weverything -Wno-all-missed-specialisations -Wno-missed-specialisations -Wno-missing-local-signatures -Wno-implicit-prelude -Wno-missing-export-lists -Wno-unsafe -Wno-safe -Wno-unused-packages -Wno-missing-kind-signatures -Wno-ambiguous-fields -Wno-missing-safe-haskell-mode -Wno-missing-import-lists -Wno-prepositive-qualified-module -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -j8 +RTS -A32m -RTS -O2 -haddock -Weverything -Wno-implicit-prelude -Wno-all-missed-specialisations -Wno-missed-specialisations -Wno-missing-local-signatures -Wno-missing-export-lists -Wno-unsafe -Wno-unused-packages -Wno-missing-kind-signatures -Wno-missing-safe-haskell-mode -Wno-missing-import-lists -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , backend
