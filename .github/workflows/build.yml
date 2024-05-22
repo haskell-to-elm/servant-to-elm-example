@@ -50,8 +50,7 @@ jobs:
           working-directory: backend
           test: true
           cache-prefix: lts-22.20
-          stack-arguments: --copy-bins
-          stack-build-arguments: --pedantic --copy-bins
+          stack-build-arguments: --pedantic --copy-bins --local-bin-path target
 
       - uses: haskell/actions/hlint-setup@v2
 
@@ -61,7 +60,8 @@ jobs:
         run: npm install -g elm-format
 
       - name: Codegen
-        run: ${{ steps.stack.outputs.local-bin-path }}/codegen
+        working-directory: backend
+        run: ./target/codegen
 
       - name: Setup Elm
         uses: jorelali/setup-elm@v5
