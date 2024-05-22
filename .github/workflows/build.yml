@@ -39,7 +39,7 @@ jobs:
         uses: actions/setup-node@v3
         # Note: set up node early for caching elm-format
         with:
-          node-version: 18.16
+          node-version: 20.13
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
