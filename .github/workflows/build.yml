@@ -53,10 +53,6 @@ jobs:
           stack-arguments: --copy-bins
           stack-build-arguments: --pedantic --copy-bins
 
-      - uses: freckle/weeder-action@v2
-        with:
-          ghc-version: ${{ steps.stack.outputs.compiler-version }}
-
       - uses: haskell/actions/hlint-setup@v2
 
       - uses: haskell/actions/hlint-run@v2
