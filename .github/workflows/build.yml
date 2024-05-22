@@ -10,6 +10,9 @@ on:
       # "synchronize" means new commits pushed to the HEAD of the pull request branch
       - synchronize
 
+permissions:
+  packages: write
+
 env:
   REGISTRY: ghcr.io
   # What tags does:
