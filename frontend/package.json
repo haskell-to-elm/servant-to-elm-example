@@ -2,6 +2,8 @@
   "name": "frontend",
   "author": "",
   "description": "",
+  "private": true,
+  "type": "module",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -20,11 +22,12 @@
     "precommit-fix": "npm run typecheck && npm run format-fix-all && npm test && npm run review-fix-all"
   },
   "devDependencies": {
+    "elm": "^0.19.1-6",
     "elm-format": "^0.8.7",
-    "elm-review": "^2.10.1",
+    "elm-review": "^2.10.2",
     "elm-test": "^0.19.1-revision12",
-    "vite": "^4.3.0",
-    "vite-plugin-elm": "^2.8.0-beta.3"
+    "vite": "^5.2.8",
+    "vite-plugin-elm": "^3.0.0"
   },
   "dependencies": {
     "elm-debug-transformer": "^1.1.2"
