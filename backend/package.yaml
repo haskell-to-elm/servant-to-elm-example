@@ -1,9 +1,9 @@
 name:                backend
 version:             0.1.0.0
-github:              "VladimirLogachev/servant-to-elm-example"
+github:              "haskell-to-elm/servant-to-elm-example"
 license:             BSD3
 author:              "Vladimir Logachev"
-maintainer:          "logachev.dev@ya.ru"
+maintainer:          "vladimir@logachev.dev"
 copyright:           "2022 Vladimir Logachev"
 
 description: Fullstack web app, an example of servant-to-elm

@@ -108,7 +108,7 @@ jobs:
         id: meta-backend
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/VladimirLogachev/servant-to-elm-example-backend
+          images: ${{ env.REGISTRY }}/haskell-to-elm/servant-to-elm-example-backend
           tags: ${{ env.TAGS }}
 
       - name: Build and push Docker image (backend)
@@ -127,7 +127,7 @@ jobs:
         id: meta-frontend
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/VladimirLogachev/servant-to-elm-example-frontend
+          images: ${{ env.REGISTRY }}/haskell-to-elm/servant-to-elm-example-frontend
           tags: ${{ env.TAGS }}
 
       - name: Build and push Docker image (frontend)

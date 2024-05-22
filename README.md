@@ -1,6 +1,6 @@
 # servant-to-elm-example
 
-![example workflow](https://github.com/vladimirlogachev/servant-to-elm-example/actions/workflows/build.yml/badge.svg)
+![build status](https://github.com/haskell-to-elm/servant-to-elm-example/actions/workflows/build.yml/badge.svg)
 
 <img src="screenshot.png" alt="servant-to-elm-example" width="500"/>
 
@@ -82,4 +82,4 @@ What's cool here is that [servant-to-elm] does the job of generating types and d
 [stack]: https://docs.haskellstack.org/en/stable/README/#how-to-install
 [elm]: https://guide.elm-lang.org/install/elm.html
 [servant]: https://www.servant.dev/
-[servant-to-elm]: https://github.com/folq/servant-to-elm
+[servant-to-elm]: https://github.com/haskell-to-elm/servant-to-elm

@@ -86,7 +86,7 @@ heading =
         , p [] [ text "Made with Servant (Haskell) and Elm," ]
         , p []
             [ text "using "
-            , a [ href "https://github.com/folq/servant-to-elm", target "_blank" ]
+            , a [ href "https://github.com/haskell-to-elm/servant-to-elm", target "_blank" ]
                 [ text "servant-to-elm" ]
             , text " library."
             ]
