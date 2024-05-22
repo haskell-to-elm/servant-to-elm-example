@@ -44,16 +44,14 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Backend Build and test
-        uses: freckle/stack-action@v4
+        uses: freckle/stack-action@v5
         id: stack
         with:
           working-directory: backend
-          fast: false
-          # Temporarily disabled
-          pedantic: false
           test: true
-          cache-prefix: lts-20.18
+          cache-prefix: lts-22.20
           stack-arguments: --copy-bins
+          stack-build-arguments: --pedantic --copy-bins
 
       - uses: freckle/weeder-action@v2
         with:
