@@ -35,8 +35,6 @@ export default defineConfig(({ command }) => {
         input: {
           // @ts-ignore
           main: resolve(__dirname, "index.html"),
-          // @ts-ignore
-          error: resolve(__dirname, "error.html"),
         },
       },
     },

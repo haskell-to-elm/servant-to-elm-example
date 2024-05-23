@@ -4,6 +4,7 @@ module Database where
 
 import Control.Exception (throw, try)
 import Control.Monad.Except
+import Control.Monad.IO.Class (liftIO)
 import Data.Bifunctor (first)
 import Data.Foldable (traverse_)
 import Data.Int (Int64)
@@ -40,8 +41,11 @@ initDb conn = do
     insertAuthorAndBooks :: NewAuthor -> [NewBook] -> ExceptT ApplicationError IO ()
     insertAuthorAndBooks newAuthor books = do
       authorId <- insertAuthor conn newAuthor
-      traverse_ (insertBook conn) $
-        (\b -> b {author = ExistingAuthorId $ fromIntegral authorId} :: NewBook) <$> books
+      traverse_
+        ( insertBook conn
+            . (\b -> NewBook {title = b.title, author = ExistingAuthorId $ fromIntegral authorId, imageUrl = b.imageUrl})
+        )
+        books
 
 {- Functions for querying the database.
 The reason for separating them from the Server is that they are used
@@ -87,9 +91,15 @@ insertBook conn NewBook {title, author, imageUrl} =
     `catchError` (\e -> rollback >> throwError e)
   where
     -- "Exclusive" transaction provides the highest isolation level in SQLite.
-    begin = lift $ execute_ conn "BEGIN EXCLUSIVE TRANSACTION"
-    commit = lift $ execute_ conn "COMMIT TRANSACTION"
-    rollback = lift $ execute_ conn "ROLLBACK TRANSACTION"
+    begin :: ExceptT ApplicationError IO ()
+    begin = liftIO $ execute_ conn "BEGIN EXCLUSIVE TRANSACTION"
+
+    commit :: ExceptT ApplicationError IO ()
+    commit = liftIO $ execute_ conn "COMMIT TRANSACTION"
+
+    rollback :: ExceptT ApplicationError IO ()
+    rollback = liftIO $ execute_ conn "ROLLBACK TRANSACTION"
+
     transformError (SQLError ErrorConstraint "UNIQUE constraint failed: books.title, books.author_id" _) =
       UserReadableError "This author already has a book with such a title. Book title must be unique per author."
     transformError (SQLError ErrorConstraint "FOREIGN KEY constraint failed" _) =

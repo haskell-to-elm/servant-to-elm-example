@@ -10,6 +10,9 @@ on:
       # "synchronize" means new commits pushed to the HEAD of the pull request branch
       - synchronize
 
+permissions:
+  packages: write
+
 env:
   REGISTRY: ghcr.io
   # What tags does:
@@ -44,20 +47,13 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Backend Build and test
-        uses: freckle/stack-action@v4
+        uses: freckle/stack-action@v5
         id: stack
         with:
           working-directory: backend
-          fast: false
-          # Temporarily disabled
-          pedantic: false
           test: true
-          cache-prefix: lts-20.18
-          stack-arguments: --copy-bins
-
-      - uses: freckle/weeder-action@v2
-        with:
-          ghc-version: ${{ steps.stack.outputs.compiler-version }}
+          cache-prefix: lts-22.20
+          stack-build-arguments: --pedantic --copy-bins --local-bin-path target
 
       - uses: haskell/actions/hlint-setup@v2
 
@@ -67,7 +63,8 @@ jobs:
         run: npm install -g elm-format
 
       - name: Codegen
-        run: ${{ steps.stack.outputs.local-bin-path }}/codegen
+        working-directory: backend
+        run: ./target/codegen
 
       - name: Setup Elm
         uses: jorelali/setup-elm@v5
@@ -108,15 +105,14 @@ jobs:
         id: meta-backend
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/VladimirLogachev/servant-to-elm-example-backend
+          images: ${{ env.REGISTRY }}/haskell-to-elm/servant-to-elm-example-backend
           tags: ${{ env.TAGS }}
 
       - name: Build and push Docker image (backend)
         uses: docker/build-push-action@v4
         with:
-          context: backend
+          context: backend/target
           file: backend/Dockerfile
-          build-contexts: bin_path_context=${{ steps.stack.outputs.local-bin-path }}
           push: true
           tags: ${{ steps.meta-backend.outputs.tags}}
           labels: ${{ steps.meta-backend.outputs.labels}}
@@ -127,7 +123,7 @@ jobs:
         id: meta-frontend
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/VladimirLogachev/servant-to-elm-example-frontend
+          images: ${{ env.REGISTRY }}/haskell-to-elm/servant-to-elm-example-frontend
           tags: ${{ env.TAGS }}
 
       - name: Build and push Docker image (frontend)

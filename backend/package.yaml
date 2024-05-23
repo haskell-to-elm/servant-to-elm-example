@@ -1,72 +1,78 @@
 name:                backend
 version:             0.1.0.0
-github:              "VladimirLogachev/servant-to-elm-example"
+github:              "haskell-to-elm/servant-to-elm-example"
 license:             BSD3
 author:              "Vladimir Logachev"
-maintainer:          "logachev.dev@ya.ru"
+maintainer:          "vladimir@logachev.dev"
 copyright:           "2022 Vladimir Logachev"
 
 description: Fullstack web app, an example of servant-to-elm
 
+# Complete list: https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/control.html
 language: GHC2021
 
 default-extensions:
-  - NoPolyKinds # Note: Breaks Elm instances for parametrized types
+  #
+  # Note on Monomorphism Restriction:
+  # - Essence: restricts polymorphism for ALL definitions,
+  #   for which no type signatures are specified and which do not "look like functions" (have no binding to the left of = )
+  # - Inconvenience: Leads to non-intuitive type inference results - less polymorphic than expected
+  # - Convenience: increases performance and reduces memory usage
+  #   More details: https://www.youtube.com/watch?v=zpBua3Mql18
+  # - Present in the Haskell specification, not just GHC
+  # - Disabled by default in GHC 9.4 (via NoMonomorphismRestriction)
+  # - But enabled by default in the GHC2021 extension set (via MonomorphismRestriction)
+  # - Instead of disabling monomorphism restriction with `NoMonomorphismRestriction`,
+  #   we use the enabled `Wmonomorphism-restriction` warning (enabled in `Weverything`),
+  #   and warning forces us to place type signatures where monomorphism restriction applies.
+  #   And in the process of specifying types, we decide whether to leave polymorphism or a specific type there,
+  #   and the behavior will always be as expected.
+  #
+  - NoPolyKinds # Note: Breaks Elm instances for parameterized types.
   - DataKinds
   - DeriveAnyClass
-  - DeriveGeneric
   - DerivingStrategies
   - DerivingVia
   - DuplicateRecordFields
-  - FlexibleContexts
-  - FlexibleInstances
-  - ImportQualifiedPost
   - LambdaCase
-  - MultiParamTypeClasses
-  - NamedFieldPuns
-  - RankNTypes
-  - NoMonomorphismRestriction
+  - OverloadedRecordDot
   - OverloadedStrings
-  - RankNTypes
-  - TupleSections
-  - TypeApplications
-  - TypeOperators
 
 ghc-options:
   # Use up to 8 cores for compilation https://ghc.gitlab.haskell.org/ghc/doc/users_guide/using.html?highlight=j#ghc-flag--j[%E2%9F%A8n%E2%9F%A9]
   - -j8
-  # Set up rts options for GHC itself https://ghc.gitlab.haskell.org/ghc/doc/users_guide/runtime_control.html#setting-rts-options
+    # Set up rts options for GHC itself https://ghc.gitlab.haskell.org/ghc/doc/users_guide/runtime_control.html#setting-rts-options
   - +RTS -A32m -RTS
-  # Optimization level:
-  # -O0 produces a non-optimized binary (significantly reduces Seq performance), but builds fast.
-  # -O2 produces a heavily optimized binary, but builds ~ 2 times slower.
-  # Note: Stack reuses existing binaries instead of rebuilding if the source code hasn't changed.
-  # We build optimized binaries by default and turn optimizations off by `--fast` flag.
+    # Optimization level:
+    # -O0 produces a non-optimized binary (significantly reduces Seq performance), but builds fast.
+    # -O2 produces a heavily optimized binary, but builds ~ 2 times slower.
+    # Note: Stack reuses existing binaries instead of rebuilding if the source code hasn't changed.
+    # We build optimized binaries by default and turn optimizations off by `--fast` flag.
   - -O2
     # Enables local documentation
   - -haddock
     # Enable all possible warnings as errors (Werror is provided manually in dockerfile for production builds and CI)
   - -Weverything
-    # Intentionally ignore some warnings
-  - -Wno-all-missed-specialisations
-  - -Wno-missed-specialisations
-  - -Wno-missing-local-signatures
+    # Complains about Prelude
   - -Wno-implicit-prelude
+    # Complains about imported functions
+  - -Wno-all-missed-specialisations
+    # Complains about imported functions
+  - -Wno-missed-specialisations
+    # Requires signatures for all local definitions
+  - -Wno-missing-local-signatures
+    # Requires explicitly list exports for all modules
   - -Wno-missing-export-lists
+    # Requires to mark unsafe modules as unsafe
   - -Wno-unsafe
-  - -Wno-safe
+    # Requires separate lists of dependencies per executable. But can really catch some unused packages.
   - -Wno-unused-packages
+    # Requires kind signature for every newtype.
   - -Wno-missing-kind-signatures
-  # Temporary disabled
-  - -Wno-ambiguous-fields
-  # Not sure if it's really useful for us, because some modules are still not "safe haskell".
+    # A lot of modules modules are still not "safe haskell".
   - -Wno-missing-safe-haskell-mode
-    # Temporarily disabled warnings which need to be fixed eventually
-    # 1. It is inconvenient to specify imports for all record fields and all value constructors
-    # We need to find a better way.
+    # Requires import lists for all record fields and all value constructors
   - -Wno-missing-import-lists
-    # 2. Because of hpack implementation details
-  - -Wno-prepositive-qualified-module
 
 dependencies:
 - base >= 4.7 && < 5

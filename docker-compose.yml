@@ -6,7 +6,7 @@ networks:
 
 services:
   backend:
-    image: ghcr.io/vladimirlogachev/servant-to-elm-example-backend:main
+    image: ghcr.io/haskell-to-elm/servant-to-elm-example-backend:main
     # This clarification of platform is necessary for Apple Silicon chips.
     platform: linux/amd64
     restart: always
@@ -14,7 +14,7 @@ services:
       - '8000:8000'
 
   frontend:
-    image: ghcr.io/vladimirlogachev/servant-to-elm-example-frontend:main
+    image: ghcr.io/haskell-to-elm/servant-to-elm-example-frontend:main
     # This clarification of platform is necessary for Apple Silicon chips.
     platform: linux/amd64
     restart: always
